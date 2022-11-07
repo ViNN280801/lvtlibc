@@ -69,3 +69,9 @@ void dealloc_mem_pdouble(double *__p);
 void dealloc_mem_pchar(char *__p);
 #endif
 #endif
+
+#ifndef _INPUT_
+// Handles an error when a user enters a character or string
+// when asked to enter a number. Returns the number entered by the user
+int input_int();
+#endif

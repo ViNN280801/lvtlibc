@@ -128,3 +128,20 @@ void dealloc_mem_pchar(char *__p)
 }
 #endif
 #endif
+
+#ifndef _INPUT_
+// Handles an error when a user enters a character or string
+// when asked to enter a number. Returns the number entered by the user
+int input_int()
+{
+    char buf[256] = {0};
+    scanf("%s", buf);
+
+    while (atoi(buf) == 0)
+    {
+        printf("Input error. Try again: ");
+        scanf("%s", buf);
+    }
+    return atoi(buf);
+}
+#endif
