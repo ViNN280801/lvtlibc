@@ -1,1 +1,2 @@
 # lvtlibc
+<p>it does not represent a specific library, (yes, I know, the name of the repository does not correspond to the content). This repository was created in order to access it using its functions in your projects. The functions are separated by preprocessor directives <code>#ifndef</code>. cmake file just for my training in writing similar files.</p>
