@@ -145,7 +145,7 @@ double **alloc_mem_ppdouble(const size_t __rows, const size_t __cols)
         exit(-1);
     }
 
-    for (size_t row = 0UL; row < __cols; row++)
+    for (size_t row = 0UL; row < __rows; row++)
     {
         pp[row] = (double *)calloc(__rows, sizeof(double));
 
