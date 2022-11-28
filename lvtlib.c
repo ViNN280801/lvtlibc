@@ -190,7 +190,7 @@ int input_int()
     char buf[256] = {0};
     scanf("%s", buf);
 
-    while (atoi(buf) == 0)
+    while ((atoi(buf) == 0) && (buf[0] != '0'))
     {
         printf("Input error. Try again: ");
         scanf("%s", buf);
@@ -202,14 +202,14 @@ int input_int()
 // when asked to enter a number. Returns the double number entered by the user
 double input_double()
 {
-    char buffer[256] = {0};
-    scanf("%s", buffer);
-    while (atof(buffer) == 0.0)
+    char buf[256] = {0};
+    scanf("%s", buf);
+    while ((atof(buf) == 0.0) && (buf[0] != '0'))
     {
         printf("Input error. Try again: ");
-        scanf("%s", buffer);
+        scanf("%s", buf);
     }
-    return atof(buffer);
+    return atof(buf);
 }
 
 // Returns an integer array, which is filled with a manually entered values
