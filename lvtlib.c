@@ -104,7 +104,7 @@ int **alloc_mem_ppint(const size_t __rows, const size_t __cols)
         exit(-1);
     }
 
-    for (size_t row = 0UL; row < __cols; row++)
+    for (size_t row = 0UL; row < __rows; row++)
     {
         pp[row] = (int *)calloc(__rows, sizeof(int));
 
