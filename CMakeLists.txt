@@ -6,7 +6,7 @@ project(lvt_c
     LANGUAGES C)
 
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_FLAGS "-Wall -Wpedantic -Wextra")
+set(CMAKE_C_FLAGS "-lm -Wall -Wpedantic -Wextra")
 
 add_library(${PROJECT_NAME} SHARED lvtlib.c)
 
