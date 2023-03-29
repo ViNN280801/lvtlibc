@@ -313,3 +313,50 @@ double **input_random_ppdouble(const size_t __rows, const size_t __cols, const d
     return matrix;
 }
 #endif
+
+#ifndef _ALGORITHMS_
+// Return count of digits in specified number
+int get_count_of_digits_in_number(int num)
+{
+    int size = 0;
+    while (num > 0)
+    {
+        num /= 10;
+        size++;
+    }
+    return size;
+}
+
+// Return count of digits of specified number (using math.h)
+int get_count_of_digits_in_number_v2(int const num)
+{
+    return floor(log10(num)) + 1;
+}
+
+// Returns int array (in descending order) that contains digits of a number
+int *split_number_on_digits(int num)
+{
+    int size = get_count_of_digits_in_number(num), i = 0;
+    int *digits = alloc_mem_pint(size);
+
+    while (num > 0)
+    {
+        digits[i] = num % 10;
+        num /= 10;
+        i++;
+    }
+    return digits;
+}
+
+// Reversing number
+void reverse_pint(int *pint, const int size)
+{
+    int temp = 0;
+    for (int i = 0; i < size / 2; i++)
+    {
+        temp = pint[i];
+        pint[i] = pint[size - i - 1];
+        pint[size - i - 1] = temp;
+    }
+}
+#endif // _ALGORITHMS_
