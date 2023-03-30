@@ -53,6 +53,14 @@ bool is_alloc_ppint(const int **__pp, const size_t __rows)
     return true;
 }
 
+// Returns "true" if memory for char
+// array was allocated correctly
+// Otherwise returns "false" (other types is similar)
+bool is_alloc_pchar(const char *__p)
+{
+    return (!__p) ? false : true;
+}
+
 // Returns "true" if memory for double
 // array was allocated correctly
 // Otherwise returns "false" (other types is similar)
@@ -118,6 +126,21 @@ int **alloc_mem_ppint(const size_t __rows, const size_t __cols)
     return pp;
 }
 
+// Allocates memory for char array with cheking on correctness
+// Exiting with status '-1' if can't allocate memory (other types is similar)
+char *alloc_mem_pchar(const size_t __arr_size)
+{
+    char *p = (char *)calloc(__arr_size, sizeof(char));
+
+    if (!is_alloc_pchar(p))
+    {
+        printf("Can't allocate memory for array of characters. Exiting with \'-1\' status\n");
+        exit(-1);
+    }
+
+    return p;
+}
+
 // Allocates memory for 'double' array with cheking on correctness
 // Exiting with status '-1' if can't allocate memory (other types is similar)
 double *alloc_mem_pdouble(const size_t __arr_size)
@@ -178,6 +201,13 @@ void dealloc_mem_ppint(int **__pp, const size_t __rows)
 
     free(__pp);
     __pp = NULL;
+}
+
+// Deallocating memory of char pointer (other types is similar)
+void dealloc_mem_pchar(char *__p)
+{
+    free(__p);
+    __p = NULL;
 }
 #endif
 #endif
@@ -358,5 +388,17 @@ void reverse_pint(int *pint, const int size)
         pint[i] = pint[size - i - 1];
         pint[size - i - 1] = temp;
     }
+}
+
+// Returns char array from integer value
+char *int_to_pchar(int num)
+{
+    int size = log10(num) + 1;
+    char *pChar = alloc_mem_pchar((size_t)size);
+    for (int i = size - 1; i >= 0; i--, num /= 10)
+    {
+        pChar[i] = (num % 10) + '0';
+    }
+    return pChar;
 }
 #endif // _ALGORITHMS_

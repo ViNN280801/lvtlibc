@@ -26,6 +26,11 @@ bool is_alloc_pint(const int *);
 // Return "true" if memory of matrix allocated correctly  (other types is similar)
 bool is_alloc_ppint(const int **, const size_t);
 
+// Returns "true" if memory for char
+// array was allocated correctly
+// Otherwise returns "false" (other types is similar)
+bool is_alloc_pchar(const char *__p);
+
 // Returns "true" if memory for double
 // array was allocated correctly
 // Otherwise returns "false" (other types is similar)
@@ -59,6 +64,9 @@ void dealloc_mem_pint(int *__p);
 
 // Deallocating memory of pointer (other types is similar)
 void dealloc_mem_ppint(int **, const size_t);
+
+// Deallocating memory of char pointer (other types is similar)
+void dealloc_mem_pint(char *);
 #endif // _DEALLOCATING_
 #endif // _MEMORY_
 
@@ -88,6 +96,10 @@ int **input_random_ppint(const size_t, const size_t, const int, const int);
 // Returns a 'double' array, which is filled with a random numbers
 double *input_random_pdouble(const size_t, const double, const double);
 
+// Allocates memory for char array with cheking on correctness
+// Exiting with status '-1' if can't allocate memory (other types is similar)
+int *alloc_mem_pchar(const size_t);
+
 // Returns a 'double' matrix, which is filled with a random numbers
 double **input_random_ppdouble(const size_t, const size_t, const double, const double);
 #endif // _INPUT_
@@ -104,4 +116,7 @@ int *split_number_on_digits(int);
 
 // Reversing number
 void reverse_pint(int *, const int);
+
+// Returns char array from integer value
+char *int_to_pchar(int);
 #endif // _ALGORITHMS_
