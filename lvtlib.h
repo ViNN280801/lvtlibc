@@ -66,7 +66,7 @@ void dealloc_mem_pint(int *__p);
 void dealloc_mem_ppint(int **, const size_t);
 
 // Deallocating memory of char pointer (other types is similar)
-void dealloc_mem_pint(char *);
+void dealloc_mem_pchar(char *);
 #endif // _DEALLOCATING_
 #endif // _MEMORY_
 
@@ -98,7 +98,7 @@ double *input_random_pdouble(const size_t, const double, const double);
 
 // Allocates memory for char array with cheking on correctness
 // Exiting with status '-1' if can't allocate memory (other types is similar)
-int *alloc_mem_pchar(const size_t);
+char *alloc_mem_pchar(const size_t);
 
 // Returns a 'double' matrix, which is filled with a random numbers
 double **input_random_ppdouble(const size_t, const size_t, const double, const double);
@@ -119,4 +119,7 @@ void reverse_pint(int *, const int);
 
 // Returns char array from integer value
 char *int_to_pchar(int);
+
+// Returns "true" if passed argument 'num' is a prime number
+bool is_prime(const int num);
 #endif // _ALGORITHMS_

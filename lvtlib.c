@@ -401,4 +401,18 @@ char *int_to_pchar(int num)
     }
     return pChar;
 }
+
+// Returns "true" if passed argument 'num' is a prime number
+bool is_prime(const int num)
+{
+    if (num <= 0)
+        return false;
+
+    for (int i = 2; i <= (int)sqrt(num); i++)
+    {
+        if (num % i == 0)
+            return false;
+    }
+    return true;
+}
 #endif // _ALGORITHMS_
