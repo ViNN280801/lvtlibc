@@ -13,22 +13,21 @@
 #define FOR_SIZE_T(n) for (size_t i = 0UL; i < n; i++)
 #define FOR_INT_FROM_TO(from, to) for (int i = from; i < to; i++)
 #define FOR_SIZE_T_FROM_TO(from, to) for (size_t i = from; i < to; i++)
-#define FOREACH_INT(item, array)                    \
-    for (int keep = 1,                              \
-             count = 0,                             \
-             size = sizeof array / sizeof *(array); \
-         keep && count != size;                     \
-         keep = !keep, count++)                     \
+#define ARRSIZE(arr) sizeof arr / sizeof *(arr)
+#define FOREACH_INT(item, array)    \
+    for (int keep = 1,              \
+             count = 0,             \
+             size = ARRSIZE(array); \
+         keep && count != size;     \
+         keep = !keep, count++)     \
         for (item = (array) + count; keep; keep = !keep)
-#define FOREACH_SIZE_T(item, array)                    \
-    for (size_t keep = 1UL,                            \
-                count = 0UL,                           \
-                size = sizeof array / sizeof *(array); \
-         keep && count != size;                        \
-         keep = !keep, count++)                        \
+#define FOREACH_SIZE_T(item, array)    \
+    for (size_t keep = 1UL,            \
+                count = 0UL,           \
+                size = ARRSIZE(array); \
+         keep && count != size;        \
+         keep = !keep, count++)        \
         for (item = (array) + count; keep; keep = !keep)
-
-#define ARRSIZE(arr) sizeof arr / sizeof arr[0]
 #define SWAP(x, y)                                                                \
     while (true)                                                                  \
     {                                                                             \
