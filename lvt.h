@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LVT_H
+#define LVT_H
 
 #include <stdio.h>
 #include <malloc.h>
@@ -7,6 +8,35 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
+
+#define FOR_INT(n) for (int i = 0; i < n; i++)
+#define FOR_SIZE_T(n) for (size_t i = 0UL; i < n; i++)
+#define FOR_INT_FROM_TO(from, to) for (int i = from; i < to; i++)
+#define FOR_SIZE_T_FROM_TO(from, to) for (size_t i = from; i < to; i++)
+#define FOREACH_INT(item, array)                    \
+    for (int keep = 1,                              \
+             count = 0,                             \
+             size = sizeof array / sizeof *(array); \
+         keep && count != size;                     \
+         keep = !keep, count++)                     \
+        for (item = (array) + count; keep; keep = !keep)
+#define FOREACH_SIZE_T(item, array)                    \
+    for (size_t keep = 1UL,                            \
+                count = 0UL,                           \
+                size = sizeof array / sizeof *(array); \
+         keep && count != size;                        \
+         keep = !keep, count++)                        \
+        for (item = (array) + count; keep; keep = !keep)
+        
+#define ARRSIZE(arr) sizeof arr / sizeof arr[0]
+#define SWAP(x, y)                                                                \
+    while (true)                                                                  \
+    {                                                                             \
+        unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
+        memcpy(swap_temp, &y, sizeof(x));                                         \
+        memcpy(&y, &x, sizeof(x));                                                \
+        memcpy(&x, swap_temp, sizeof(x));                                         \
+    }
 
 #ifndef _PRINT_FUNCTIONS_
 // Prints array on terminal (other types is similar)
@@ -123,3 +153,5 @@ char *int_to_pchar(int);
 // Returns "true" if passed argument 'num' is a prime number
 bool is_prime(const int num);
 #endif // _ALGORITHMS_
+
+#endif // !LVT_H

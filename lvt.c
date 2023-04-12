@@ -1,4 +1,4 @@
-#include "lvtlib.h"
+#include "lvt.h"
 
 #ifndef _PRINT_FUNCTIONS_
 // Prints array on terminal (other types is similar)
@@ -414,5 +414,225 @@ bool is_prime(const int num)
             return false;
     }
     return true;
+}
+
+// Sorting 1d array by bubble sorting algorithm
+void bubbleSortAscending(int arr[])
+{
+    for (size_t i = 0; i < ARRSIZE(arr); i++)
+        for (size_t j = 0; j < ARRSIZE(arr); j++)
+            if (arr[i] < arr[j])
+                SWAP(arr[i], arr[j]);
+}
+
+// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+void insertionSortAscending(int arr[])
+{
+    // Iterating by vector from 2nd element to end: [begin + 1; end]
+    for (size_t i = 1UL; i < ARRSIZE(arr); i++)
+    {
+        // Initializing position of previous element from 'i'
+        size_t j = i - 1UL;
+
+        // Initializing currenint value = of vector
+        int value = arr[i];
+
+        // While position of prev element is lower than size of vector
+        // and element in this position is bigger than currenint value = ->
+        // assigning it to next element (j + 1) of vector
+        while (j < ARRSIZE(arr) && arr[j] > value)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        // Assigning current element to next from previous
+        arr[j + 1] = value;
+    }
+}
+
+// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+void selectionSortAscending(int arr[])
+{
+    // Iterating over the range
+    for (size_t i = 0; i < ARRSIZE(arr); i++)
+    {
+        // For example, minimal element is begin element of the vector
+        size_t minPos = i;
+
+        // Iterating over the unsorted range
+        for (size_t j = i + 1UL; j < ARRSIZE(arr); j++)
+        {
+            // If element from the unsorted range is lower than the current ->
+            // assigning new position to 'minPos' variable
+            if (arr[j] < arr[minPos])
+                minPos = j;
+        }
+        // Swap minimal element with current
+        SWAP(arr[i], arr[minPos]);
+    }
+}
+
+// Sorting array by Shell sorting algorithm
+void ShellSortAscending(int arr[])
+{
+    for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
+    {
+        for (size_t i = 0; i < ARRSIZE(arr); i++)
+        {
+            int val = arr[i];
+            size_t j = 0;
+            for (j = i; (j >= interval) && (arr[j - interval] > val); j -= interval)
+            {
+                arr[j] = arr[j - interval];
+            }
+            arr[j] = val;
+        }
+    }
+}
+
+// Auxiliary method for quick sort algortihm
+void qSortAscending(int arr[], size_t low, size_t high)
+{
+    size_t i = low, j = high;
+    // Select pivoint value =
+    int pivot = arr[(i + j) / 2], tmp = 0;
+
+    while (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+    {
+        while (arr[i] < pivot && i < ARRSIZE(arr))
+            i++;
+        while (arr[j] > pivot && j < ARRSIZE(arr))
+            j--;
+        if (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+        {
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+            i++;
+            j--;
+        }
+    }
+    // Recursive call sorting to left side from pivot
+    if (j > low && j < ARRSIZE(arr))
+        qSortAscending(arr, low, j);
+    // Recursive call sorting to right side from pivot
+    if (i < high && i < ARRSIZE(arr))
+        qSortAscending(arr, i, high);
+}
+
+// Sorting array by quick sorting (Hoare sort) algorithm
+void quickSortAscending(int arr[])
+{
+    qSortAscending(arr, 0, ARRSIZE(arr) - 1);
+}
+
+// Sorting 1d array by bubble sorting algorithm
+void bubbleSortDescending(int arr[])
+{
+    for (size_t i = 0; i < ARRSIZE(arr); i++)
+        for (size_t j = 0; j < ARRSIZE(arr); j++)
+            if (arr[i] > arr[j])
+                SWAP(arr[i], arr[j]);
+}
+
+// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+void insertionSortDescending(int arr[])
+{
+    // Iterating by vector from 2nd element to end: [begin + 1; end]
+    for (size_t i = 1UL; i < ARRSIZE(arr); i++)
+    {
+        // Initializing currenint value = of vector
+        int val = arr[i];
+
+        // Initializing position of previous element from 'i'
+        size_t pos = i - 1;
+
+        // While position of prev element is lower than size of vector
+        // and element in this position is bigger than currenint value = ->
+        // assigning it to next element (j + 1) of vector
+        while (pos < ARRSIZE(arr) && arr[pos] < val)
+        {
+            arr[pos + 1] = arr[pos];
+            pos--;
+        }
+        // Assigning current element to next from previous
+        arr[pos + 1] = val;
+    }
+}
+
+// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+void selectionSortDescending(int arr[])
+{
+    // Iterating over the range
+    for (size_t i = 0; i < ARRSIZE(arr); i++)
+    {
+        // For example, minimal element is begin element of the vector
+        size_t maxPos = i;
+
+        // Iterating over the unsorted range
+        for (size_t j = i + 1UL; j < ARRSIZE(arr); j++)
+        {
+            // If element from the unsorted range is lower than the current ->
+            // assigning new position to 'maxPos' variable
+            if (arr[j] > arr[maxPos])
+                maxPos = j;
+        }
+        // Swap minimal element with current
+        SWAP(arr[i], arr[maxPos]);
+    }
+}
+
+// Sorting array by Shell sorting algorithm
+void ShellSortDescending(int arr[])
+{
+    for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
+    {
+        for (size_t i = 0; i < ARRSIZE(arr); i++)
+        {
+            int val = arr[i];
+            size_t j = 0;
+            for (j = i; (j >= interval) && (arr[j - interval] < val); j -= interval)
+            {
+                arr[j] = arr[j - interval];
+            }
+            arr[j] = val;
+        }
+    }
+}
+
+// Auxiliary method for quick sort algortihm
+void qSortDescending(int arr[], size_t low, size_t high)
+{
+    size_t i = low, j = high;
+    // Select pivoint value =
+    int pivot = arr[(i + j) / 2], tmp = 0;
+
+    while (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+    {
+        while (arr[i] > pivot && i < ARRSIZE(arr))
+            i++;
+        while (arr[j] < pivot && j < ARRSIZE(arr))
+            j--;
+        if (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+        {
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+            i++;
+            j--;
+        }
+    }
+    // Recursive call sorting to left side from pivot
+    if (j > low && j < ARRSIZE(arr))
+        qSortDescending(arr, low, j);
+    // Recursive call sorting to right side from pivot
+    if (i < high && i < ARRSIZE(arr))
+        qSortDescending(arr, i, high);
+}
+
+// Sorting array by quick sorting (Hoare sort) algorithm
+void quickSortDescending(int arr[])
+{
+    qSortDescending(arr, 0, ARRSIZE(arr) - 1);
 }
 #endif // _ALGORITHMS_
