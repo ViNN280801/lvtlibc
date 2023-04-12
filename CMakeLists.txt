@@ -8,7 +8,7 @@ project(lvt_c
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_FLAGS "-lm -Wall -Wpedantic -Wextra")
 
-add_library(${PROJECT_NAME} SHARED lvtlib.c)
+add_library(${PROJECT_NAME} SHARED lvt.c)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION 1)
