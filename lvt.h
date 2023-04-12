@@ -27,7 +27,7 @@
          keep && count != size;                        \
          keep = !keep, count++)                        \
         for (item = (array) + count; keep; keep = !keep)
-        
+
 #define ARRSIZE(arr) sizeof arr / sizeof arr[0]
 #define SWAP(x, y)                                                                \
     while (true)                                                                  \
@@ -152,6 +152,39 @@ char *int_to_pchar(int);
 
 // Returns "true" if passed argument 'num' is a prime number
 bool is_prime(const int num);
+
+// Sorting 1d array by bubble sorting algorithm
+void bubbleSortAscending(int[]);
+
+// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+void insertionSortAscending(int[]);
+
+// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+void selectionSortAscending(int[]);
+
+// Sorting array by Shell sorting algorithm
+void ShellSortAscending(int[]);
+
+// Auxiliary method for quick sort algortihm
+void qSortAscending(int[], size_t, size_t);
+
+// Sorting array by quick sorting (Hoare sort) algorithm
+void quickSortAscending(int[]);
+
+// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+void insertionSortDescending(int[]);
+
+// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+void selectionSortDescending(int[]);
+
+// Sorting array by Shell sorting algorithm
+void ShellSortDescending(int[]);
+
+// Auxiliary method for quick sort algortihm
+void qSortDescending(int[], size_t, size_t);
+
+// Sorting array by quick sorting (Hoare sort) algorithm
+void quickSortDescending(int[]);
 #endif // _ALGORITHMS_
 
 #endif // !LVT_H
