@@ -1,8 +1,7 @@
 #include "lvt.h"
 
 #ifndef _PRINT_FUNCTIONS_
-// Prints array on terminal (other types is similar)
-void print_pint(const int *__parr, const size_t __arr_size)
+void print_pint(int *__parr, size_t __arr_size)
 {
     printf("\n==== ==== ==== ==== ====\nArray:\n");
     for (size_t i = 0UL; i < __arr_size; i++)
@@ -12,8 +11,7 @@ void print_pint(const int *__parr, const size_t __arr_size)
     printf("==== ==== ==== ==== ====\n\n");
 }
 
-// Prints matrix on terminal (other types is similar)
-void print_ppint(int **__pp, const size_t __rows, const size_t __cols)
+void print_ppint(int **__pp, size_t __rows, size_t __cols)
 {
     printf("\n==== ==== ==== ==== ==== ==== ==== ==== ====\nMatrix:\n");
     // Simple iterating over the matrix by indeces of row and column
@@ -31,16 +29,12 @@ void print_ppint(int **__pp, const size_t __rows, const size_t __cols)
 
 #ifndef _MEMORY_
 #ifndef _CHECK_ALLOCATING_
-// Returns "true" if memory for int
-// array was allocated correctly
-// Otherwise returns "false" (other types is similar)
-bool is_alloc_pint(const int *__p)
+bool is_alloc_pint(int *__p)
 {
     return (!__p) ? false : true;
 }
 
-// Return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppint(const int **__pp, const size_t __rows)
+bool is_alloc_ppint(int **__pp, size_t __rows)
 {
     for (size_t row = 0UL; row < __rows; row++)
     {
@@ -53,24 +47,17 @@ bool is_alloc_ppint(const int **__pp, const size_t __rows)
     return true;
 }
 
-// Returns "true" if memory for char
-// array was allocated correctly
-// Otherwise returns "false" (other types is similar)
 bool is_alloc_pchar(const char *__p)
 {
     return (!__p) ? false : true;
 }
 
-// Returns "true" if memory for double
-// array was allocated correctly
-// Otherwise returns "false" (other types is similar)
-bool is_alloc_pdouble(const double *__p)
+bool is_alloc_pdouble(double *__p)
 {
     return (!__p) ? false : true;
 }
 
-// Return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppdouble(const double **__pp, const size_t __rows)
+bool is_alloc_ppdouble(double **__pp, size_t __rows)
 {
     for (size_t row = 0UL; row < __rows; row++)
     {
@@ -85,9 +72,7 @@ bool is_alloc_ppdouble(const double **__pp, const size_t __rows)
 #endif
 
 #ifndef _ALLOCATING_
-// Allocates memory for integer array with cheking on correctness
-// Exiting with status '-1' if can't allocate memory (other types is similar)
-int *alloc_mem_pint(const size_t __arr_size)
+int *alloc_mem_pint(size_t __arr_size)
 {
     int *p = (int *)calloc(__arr_size, sizeof(int));
 
@@ -100,9 +85,7 @@ int *alloc_mem_pint(const size_t __arr_size)
     return p;
 }
 
-// Allocates memory to matrix with checkings on correctness of allocating
-// Returns pointer on a matrix of integer values
-int **alloc_mem_ppint(const size_t __rows, const size_t __cols)
+int **alloc_mem_ppint(size_t __rows, size_t __cols)
 {
     int **pp = (int **)calloc(__cols, sizeof(int *));
 
@@ -126,9 +109,7 @@ int **alloc_mem_ppint(const size_t __rows, const size_t __cols)
     return pp;
 }
 
-// Allocates memory for char array with cheking on correctness
-// Exiting with status '-1' if can't allocate memory (other types is similar)
-char *alloc_mem_pchar(const size_t __arr_size)
+char *alloc_mem_pchar(size_t __arr_size)
 {
     char *p = (char *)calloc(__arr_size, sizeof(char));
 
@@ -141,9 +122,7 @@ char *alloc_mem_pchar(const size_t __arr_size)
     return p;
 }
 
-// Allocates memory for 'double' array with cheking on correctness
-// Exiting with status '-1' if can't allocate memory (other types is similar)
-double *alloc_mem_pdouble(const size_t __arr_size)
+double *alloc_mem_pdouble(size_t __arr_size)
 {
     double *p = (double *)calloc(__arr_size, sizeof(double));
 
@@ -156,9 +135,7 @@ double *alloc_mem_pdouble(const size_t __arr_size)
     return p;
 }
 
-// Allocates memory to matrix with checkings on correctness of allocating
-// Returns pointer on a matrix of doubles values
-double **alloc_mem_ppdouble(const size_t __rows, const size_t __cols)
+double **alloc_mem_ppdouble(size_t __rows, size_t __cols)
 {
     double **pp = (double **)calloc(__cols, sizeof(double *));
 
@@ -184,15 +161,13 @@ double **alloc_mem_ppdouble(const size_t __rows, const size_t __cols)
 #endif
 
 #ifndef _DEALLOCATING_
-// Deallocating memory of int pointer (other types is similar)
 void dealloc_mem_pint(int *__p)
 {
     free(__p);
     __p = NULL;
 }
 
-// Deallocating memory of '__pp' pointer (other types is similar)
-void dealloc_mem_ppint(int **__pp, const size_t __rows)
+void dealloc_mem_ppint(int **__pp, size_t __rows)
 {
     for (size_t row = 0UL; row < __rows; row++)
     {
@@ -203,7 +178,6 @@ void dealloc_mem_ppint(int **__pp, const size_t __rows)
     __pp = NULL;
 }
 
-// Deallocating memory of char pointer (other types is similar)
 void dealloc_mem_pchar(char *__p)
 {
     free(__p);
@@ -213,8 +187,6 @@ void dealloc_mem_pchar(char *__p)
 #endif
 
 #ifndef _INPUT_
-// Handles an error when a user enters a character or string
-// when asked to enter a number. Returns the integer number entered by the user
 int input_int()
 {
     char buf[256] = {0};
@@ -228,8 +200,6 @@ int input_int()
     return atoi(buf);
 }
 
-// Handles an error when a user enters a character or string
-// when asked to enter a number. Returns the double number entered by the user
 double input_double()
 {
     char buf[256] = {0};
@@ -242,8 +212,7 @@ double input_double()
     return atof(buf);
 }
 
-// Returns an integer array, which is filled with a manually entered values
-int *input_manual_pint(const size_t __size)
+int *input_manual_pint(size_t __size)
 {
     int *parr = alloc_mem_pint(__size);
 
@@ -256,10 +225,7 @@ int *input_manual_pint(const size_t __size)
     return parr;
 }
 
-// Returns an integer array, which is filled with a random numbers
-// "rand % __num1" returns numbers from 0 to '__num1'
-// adding '__num2' gives number between '__num2' and '__num1 + __num2'
-int *input_random_pint(const size_t __size, const int __num1, const int __num2)
+int *input_random_pint(size_t __size, int __num1, int __num2)
 {
     srand(time(NULL));
     int *parr = alloc_mem_pint(__size);
@@ -273,8 +239,7 @@ int *input_random_pint(const size_t __size, const int __num1, const int __num2)
     return parr;
 }
 
-// Returns an integer matrix, which is filled with a manually entered values
-int **input_manual_ppint(const size_t __rows, const size_t __cols)
+int **input_manual_ppint(size_t __rows, size_t __cols)
 {
     int **matrix = alloc_mem_ppint(__rows, __cols);
 
@@ -290,8 +255,7 @@ int **input_manual_ppint(const size_t __rows, const size_t __cols)
     return matrix;
 }
 
-// Returns an integer matrix, which is filled with a random numbers
-int **input_random_ppint(const size_t __rows, const size_t __cols, const int __num1, const int __num2)
+int **input_random_ppint(size_t __rows, size_t __cols, int __num1, int __num2)
 {
     int **matrix = alloc_mem_ppint(__rows, __cols);
 
@@ -308,8 +272,7 @@ int **input_random_ppint(const size_t __rows, const size_t __cols, const int __n
     return matrix;
 }
 
-// Returns a 'double' array, which is filled with a random numbers
-double *input_random_pdouble(const size_t __size, const double __min, const double __max)
+double *input_random_pdouble(size_t __size, double __min, double __max)
 {
     srand(time(NULL));
     double *parr = alloc_mem_pdouble(__size);
@@ -324,8 +287,7 @@ double *input_random_pdouble(const size_t __size, const double __min, const doub
     return parr;
 }
 
-// Returns a 'double' matrix, which is filled with a random numbers
-double **input_random_ppdouble(const size_t __rows, const size_t __cols, const double __min, const double __max)
+double **input_random_ppdouble(size_t __rows, size_t __cols, double __min, double __max)
 {
     double **matrix = alloc_mem_ppdouble(__rows, __cols);
 
@@ -345,7 +307,6 @@ double **input_random_ppdouble(const size_t __rows, const size_t __cols, const d
 #endif
 
 #ifndef _ALGORITHMS_
-// Return count of digits in specified number
 int get_count_of_digits_in_number(int num)
 {
     int size = 0;
@@ -357,13 +318,8 @@ int get_count_of_digits_in_number(int num)
     return size;
 }
 
-// Return count of digits of specified number (using math.h)
-int get_count_of_digits_in_number_v2(int const num)
-{
-    return floor(log10(num)) + 1;
-}
+int get_count_of_digits_in_number_v2(int const num) { return floor(log10(num)) + 1; }
 
-// Returns int array (in descending order) that contains digits of a number
 int *split_number_on_digits(int num)
 {
     int size = get_count_of_digits_in_number(num), i = 0;
@@ -378,8 +334,7 @@ int *split_number_on_digits(int num)
     return digits;
 }
 
-// Reversing number
-void reverse_pint(int *pint, const int size)
+void reverse_pint(int *pint, int size)
 {
     int temp = 0;
     for (int i = 0; i < size / 2; i++)
@@ -390,7 +345,6 @@ void reverse_pint(int *pint, const int size)
     }
 }
 
-// Returns char array from integer value
 char *int_to_pchar(int num)
 {
     int size = log10(num) + 1;
@@ -403,7 +357,7 @@ char *int_to_pchar(int num)
 }
 
 // Returns "true" if passed argument 'num' is a prime number
-bool is_prime(const int num)
+bool is_prime(int num)
 {
     if (num <= 0)
         return false;
@@ -425,7 +379,19 @@ void bubbleSortAscending(int arr[])
                 SWAP(arr[i], arr[j]);
 }
 
-// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+void bubbleSortMatrixAscending(int **arr, size_t rows, size_t cols)
+{
+    // Perform bubble sort on the diagonal elements
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < rows; j++)
+            for (int k = 0; k < cols; k++)
+                for (int m = 0; m < cols; m++)
+                    if (arr[i][k] < arr[j][m])
+                    {
+                        SWAP(arr[i][k], arr[j][m]);
+                    }
+}
+
 void insertionSortAscending(int arr[])
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
@@ -450,7 +416,25 @@ void insertionSortAscending(int arr[])
     }
 }
 
-// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+void insertionSortMatrixAscending(int **arr, size_t rows, size_t cols)
+{
+    int *pint = alloc_mem_pint(rows * cols);
+    matrixToArr(arr, pint, rows, cols);
+    for (size_t i = 1; i < rows * cols; i++)
+    {
+        int val = pint[i];
+        size_t pos = i - 1;
+        while (pos < rows * cols && pint[pos] > val)
+        {
+            pint[pos + 1] = pint[pos];
+            pos--;
+        }
+        pint[pos + 1] = val;
+    }
+
+    arrayToMatrix(pint, arr, rows, cols);
+}
+
 void selectionSortAscending(int arr[])
 {
     // Iterating over the range
@@ -472,7 +456,42 @@ void selectionSortAscending(int arr[])
     }
 }
 
-// Sorting array by Shell sorting algorithm
+void selectionSortMatrixAscending(int **arr, size_t rows, size_t cols)
+{
+    for (size_t row = 0; row < rows; row++)
+    {
+        for (size_t col = 0; col < cols; col++)
+        {
+            size_t minRow = row, minCol = col;
+            int min = arr[row][col];
+
+            for (size_t j = col + 1; j < cols; j++)
+            {
+                if (arr[row][j] < min)
+                {
+                    minRow = row;
+                    minCol = j;
+                    min = arr[row][j];
+                }
+            }
+            for (size_t i = row + 1; i < rows; i++)
+            {
+                for (size_t j = 0; j < cols; j++)
+                {
+                    if (arr[i][j] < min)
+                    {
+                        minRow = i;
+                        minCol = j;
+                        min = arr[i][j];
+                    }
+                }
+            }
+            arr[minRow][minCol] = arr[row][col];
+            SWAP(arr[row][col], min);
+        }
+    }
+}
+
 void ShellSortAscending(int arr[])
 {
     for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
@@ -490,7 +509,27 @@ void ShellSortAscending(int arr[])
     }
 }
 
-// Auxiliary method for quick sort algortihm
+void ShellSortMatrixAscending(int **arr, size_t rows, size_t cols)
+{
+    int *pint = alloc_mem_pint(rows * cols);
+    matrixToArr(arr, pint, rows, cols);
+    for (size_t gap = rows * cols / 2; gap > 0; gap /= 2)
+    {
+        for (size_t i = gap; i < rows * cols; i++)
+        {
+            int temp = pint[i];
+            size_t j = i;
+            while (j >= gap && pint[j - gap] > temp)
+            {
+                pint[j] = pint[j - gap];
+                j -= gap;
+            }
+            pint[j] = temp;
+        }
+    }
+    arrayToMatrix(pint, arr, rows, cols);
+}
+
 void qSortAscending(int arr[], size_t low, size_t high)
 {
     size_t i = low, j = high;
@@ -520,13 +559,19 @@ void qSortAscending(int arr[], size_t low, size_t high)
         qSortAscending(arr, i, high);
 }
 
-// Sorting array by quick sorting (Hoare sort) algorithm
 void quickSortAscending(int arr[])
 {
     qSortAscending(arr, 0, ARRSIZE(arr) - 1);
 }
 
-// Sorting 1d array by bubble sorting algorithm
+void quickSortMatrixAscending(int **arr, size_t rows, size_t cols)
+{
+    int *pint = alloc_mem_pint(rows * cols);
+    matrixToArr(arr, pint, rows, cols);
+    quicksort(pint, rows * cols, 0, rows * cols - 1);
+    arrayToMatrix(pint, arr, rows, cols);
+}
+
 void bubbleSortDescending(int arr[])
 {
     for (size_t i = 0; i < ARRSIZE(arr); i++)
@@ -535,7 +580,6 @@ void bubbleSortDescending(int arr[])
                 SWAP(arr[i], arr[j]);
 }
 
-// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
 void insertionSortDescending(int arr[])
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
@@ -560,7 +604,6 @@ void insertionSortDescending(int arr[])
     }
 }
 
-// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
 void selectionSortDescending(int arr[])
 {
     // Iterating over the range
@@ -582,7 +625,6 @@ void selectionSortDescending(int arr[])
     }
 }
 
-// Sorting array by Shell sorting algorithm
 void ShellSortDescending(int arr[])
 {
     for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
@@ -600,7 +642,6 @@ void ShellSortDescending(int arr[])
     }
 }
 
-// Auxiliary method for quick sort algortihm
 void qSortDescending(int arr[], size_t low, size_t high)
 {
     size_t i = low, j = high;
@@ -630,9 +671,30 @@ void qSortDescending(int arr[], size_t low, size_t high)
         qSortDescending(arr, i, high);
 }
 
-// Sorting array by quick sorting (Hoare sort) algorithm
 void quickSortDescending(int arr[])
 {
     qSortDescending(arr, 0, ARRSIZE(arr) - 1);
+}
+
+void matrixToArr(int **src, int *dest, size_t rows, size_t cols)
+{
+    size_t counter = 0;
+    for (size_t i = 0; i < rows; i++)
+        for (size_t j = 0; j < cols; j++)
+        {
+            dest[counter] = src[i][j];
+            ++counter;
+        }
+}
+
+void arrayToMatrix(int *src, int **dest, size_t rows, size_t cols)
+{
+    size_t counter = 0;
+    for (size_t i = 0; i < rows && counter < rows * cols; i++)
+        for (size_t j = 0; j < cols; j++)
+        {
+            dest[i][j] = src[counter];
+            counter++;
+        }
 }
 #endif // _ALGORITHMS_

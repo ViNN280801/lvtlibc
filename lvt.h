@@ -39,10 +39,10 @@
 
 #ifndef _PRINT_FUNCTIONS_
 // Prints array on terminal (other types is similar)
-void print_pint(const int *, const size_t);
+void print_pint(int *, size_t);
 
 // Prints matrix on terminal (other types is similar)
-void print_ppint(int **, const size_t, const size_t);
+void print_ppint(int **, size_t, size_t);
 #endif // _PRINT_FUNCTIONS_
 
 #ifndef _MEMORY_
@@ -50,10 +50,10 @@ void print_ppint(int **, const size_t, const size_t);
 // Returns "true" if memory for int
 // array was allocated correctly
 // Otherwise returns "false" (other types is similar)
-bool is_alloc_pint(const int *);
+bool is_alloc_pint(int *);
 
 // Return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppint(const int **, const size_t);
+bool is_alloc_ppint(int **, size_t);
 
 // Returns "true" if memory for char
 // array was allocated correctly
@@ -63,28 +63,28 @@ bool is_alloc_pchar(const char *__p);
 // Returns "true" if memory for double
 // array was allocated correctly
 // Otherwise returns "false" (other types is similar)
-bool is_alloc_pdouble(const double *);
+bool is_alloc_pdouble(double *);
 
 // Return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppdouble(const double **, const size_t);
+bool is_alloc_ppdouble(double **, size_t);
 #endif // _CHECK_ALLOCATING_
 
 #ifndef _ALLOCATING_
 // Allocates memory for int array with cheking on correctness
 // Exiting with status '-1' if can't allocate memory (other types is similar)
-int *alloc_mem_pint(const size_t);
+int *alloc_mem_pint(size_t);
 
 // Allocates memory to matrix with checkings on correctness of allocating
 // Returns pointer on a matrix of integer values (other types is similar)
-int **alloc_mem_ppint(const size_t, const size_t);
+int **alloc_mem_ppint(size_t, size_t);
 
 // Allocates memory for 'double' array with cheking on correctness
 // Exiting with status '-1' if can't allocate memory (other types is similar)
-double *alloc_mem_pdouble(const size_t);
+double *alloc_mem_pdouble(size_t);
 
 // Allocates memory to matrix with checkings on correctness of allocating
 // Returns pointer on a matrix of doubles values
-double **alloc_mem_ppdouble(const size_t, const size_t);
+double **alloc_mem_ppdouble(size_t, size_t);
 #endif // _ALLOCATING_
 
 #ifndef _DEALLOCATING_
@@ -92,7 +92,7 @@ double **alloc_mem_ppdouble(const size_t, const size_t);
 void dealloc_mem_pint(int *__p);
 
 // Deallocating memory of pointer (other types is similar)
-void dealloc_mem_ppint(int **, const size_t);
+void dealloc_mem_ppint(int **, size_t);
 
 // Deallocating memory of char pointer (other types is similar)
 void dealloc_mem_pchar(char *);
@@ -109,28 +109,28 @@ int input_int();
 double input_double();
 
 // Returns an integer array, which is filled with a manually entered values
-int *input_manual_pint(const size_t);
+int *input_manual_pint(size_t);
 
 // Returns an integer array, which is filled with a random numbers
 // "rand % __num1" returns numbers from 0 to '__num1'
 // adding '__num2' gives number between '__num2' and '__num1 + __num2'
-int *input_random_pint(const size_t, const int, const int);
+int *input_random_pint(size_t, int, int);
 
 // Returns an integer matrix, which is filled with a manually entered values
-int **input_manual_ppint(const size_t, const size_t);
+int **input_manual_ppint(size_t, size_t);
 
 // Returns an integer matrix, which is filled with a random numbers
-int **input_random_ppint(const size_t, const size_t, const int, const int);
+int **input_random_ppint(size_t, size_t, int, int);
 
 // Returns a 'double' array, which is filled with a random numbers
-double *input_random_pdouble(const size_t, const double, const double);
+double *input_random_pdouble(size_t, double, double);
 
 // Allocates memory for char array with cheking on correctness
 // Exiting with status '-1' if can't allocate memory (other types is similar)
-char *alloc_mem_pchar(const size_t);
+char *alloc_mem_pchar(size_t);
 
 // Returns a 'double' matrix, which is filled with a random numbers
-double **input_random_ppdouble(const size_t, const size_t, const double, const double);
+double **input_random_ppdouble(size_t, size_t, double, double);
 #endif // _INPUT_
 
 #ifndef _ALGORITHMS_
@@ -144,25 +144,37 @@ int get_count_of_digits_in_number_v2(int);
 int *split_number_on_digits(int);
 
 // Reversing number
-void reverse_pint(int *, const int);
+void reverse_pint(int *, int);
 
 // Returns char array from integer value
 char *int_to_pchar(int);
 
 // Returns "true" if passed argument 'num' is a prime number
-bool is_prime(const int num);
+bool is_prime(int);
 
 // Sorting 1d array by bubble sorting algorithm
 void bubbleSortAscending(int[]);
 
-// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+// Sorting matrix with bubble sort algorithm
+void bubbleSortMatrixAscending(int **, size_t, size_t);
+
+// Sorting elems in array. Best case - O(n). Middle and worst cases - O(n^2)
 void insertionSortAscending(int[]);
 
-// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+// Sorting elems in matrix. Best case - O(n). Middle and worst cases - O(n^2)
+void insertionSortMatrixAscending(int**, size_t, size_t);
+
+// Sorting array by selection algorithm (the lowest perfonamce algorithm)
 void selectionSortAscending(int[]);
+
+// Sorting matrix by selection algorithm
+void selectionSortMatrixAscending(int **, size_t, size_t);
 
 // Sorting array by Shell sorting algorithm
 void ShellSortAscending(int[]);
+
+// Sorting matrix by Shell sorting algorithm
+void ShellSortMatrixAscending(int **, size_t, size_t);
 
 // Auxiliary method for quick sort algortihm
 void qSortAscending(int[], size_t, size_t);
@@ -170,10 +182,13 @@ void qSortAscending(int[], size_t, size_t);
 // Sorting array by quick sorting (Hoare sort) algorithm
 void quickSortAscending(int[]);
 
-// Sorting elems in vector. Best case - O(n). Middle and worst cases - O(n^2)
+// Sorting matrix by quick sorting (Hoare sort) algorithm
+void quickSortMatrixAscending(int **, size_t, size_t);
+
+// Sorting elems in array. Best case - O(n). Middle and worst cases - O(n^2)
 void insertionSortDescending(int[]);
 
-// Sorting vector by selection algorithm (the lowest perfonamce algorithm)
+// Sorting array by selection algorithm (the lowest perfonamce algorithm)
 void selectionSortDescending(int[]);
 
 // Sorting array by Shell sorting algorithm
@@ -184,6 +199,11 @@ void qSortDescending(int[], size_t, size_t);
 
 // Sorting array by quick sorting (Hoare sort) algorithm
 void quickSortDescending(int[]);
+
+// Converting int matrix to an array
+void matrixToArr(int **, int *, size_t, size_t);
+
+void arrayToMatrix(int *, int **, size_t, size_t);
 #endif // _ALGORITHMS_
 
 #endif // !LVT_H
