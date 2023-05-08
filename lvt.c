@@ -697,4 +697,50 @@ void arrayToMatrix(int *src, int **dest, size_t rows, size_t cols)
             counter++;
         }
 }
+
+unsigned long hex_to_ulong(const char *str)
+{
+    return strtoul(str, NULL, 16);
+}
+
+char *str_to_upper(char *str)
+{
+    // If string is empty no need to perform any actions with it
+    if (strlen(str) == 0)
+        return "";
+
+    char *copy = alloc_mem_pchar(strlen(str));
+    strcpy(copy, str);
+
+    // Modifying each character of string 'str' to uppercase
+    for (size_t i = 0; i < strlen(str); i++)
+        copy[i] = toupper(copy[i]);
+
+    return copy;
+}
+
+char *str_to_lower(char *str)
+{
+    if (strlen(str) == 0)
+        return "";
+    char *copy = alloc_mem_pchar(strlen(str));
+    strcpy(copy, str);
+    for (size_t i = 0; i < strlen(str); i++)
+        copy[i] = tolower(copy[i]);
+    return copy;
+}
+
+char *int_to_hex(int value, size_t maxlen)
+{
+    char *hex = (char *)calloc(maxlen, sizeof(char));
+    snprintf(hex, maxlen, "0x%X", value);
+    return hex;
+}
+
+int hex_to_int(const char *hex, const char *format)
+{
+    unsigned res = 0;
+    sscanf(hex, format, &res);
+    return res;
+}
 #endif // _ALGORITHMS_
