@@ -307,28 +307,34 @@ double **input_random_ppdouble(size_t __rows, size_t __cols, double __min, doubl
 #endif
 
 #ifndef _ALGORITHMS_
-int get_count_of_digits_in_number(int num)
+
+/**
+ * @brief Counts number of digits in a number 'n'
+ * @param n specified number to count it digits
+ * @return Count of digits in number 'n'
+ */
+int get_count_of_digits_in_number(int n)
 {
     int size = 0;
-    while (num > 0)
+    while (n > 0)
     {
-        num /= 10;
+        n /= 10;
         size++;
     }
     return size;
 }
 
-int get_count_of_digits_in_number_v2(int const num) { return floor(log10(num)) + 1; }
+int get_count_of_digits_in_number_v2(int n) { return floor(log10(n)) + 1; }
 
-int *split_number_on_digits(int num)
+int *split_number_on_digits(int n)
 {
-    int size = get_count_of_digits_in_number(num), i = 0;
+    int size = get_count_of_digits_in_number(n), i = 0;
     int *digits = alloc_mem_pint(size);
 
-    while (num > 0)
+    while (n > 0)
     {
-        digits[i] = num % 10;
-        num /= 10;
+        digits[i] = n % 10;
+        n /= 10;
         i++;
     }
     return digits;
@@ -356,7 +362,6 @@ char *int_to_pchar(int num)
     return pChar;
 }
 
-// Returns "true" if passed argument 'num' is a prime number
 bool is_prime(int num)
 {
     if (num <= 0)
@@ -370,7 +375,6 @@ bool is_prime(int num)
     return true;
 }
 
-// Sorting 1d array by bubble sorting algorithm
 void bubbleSortAscending(int arr[])
 {
     for (size_t i = 0; i < ARRSIZE(arr); i++)
@@ -742,5 +746,17 @@ int hex_to_int(const char *hex, const char *format)
     unsigned res = 0;
     sscanf(hex, format, &res);
     return res;
+}
+
+void remove_char(char *str, char c)
+{
+    char *src = NULL, *dst = NULL;
+    for (src = dst = str; *src != '\0'; src++)
+    {
+        *dst = *src;
+        if (*dst != c)
+            dst++;
+    }
+    *dst = '\0';
 }
 #endif // _ALGORITHMS_

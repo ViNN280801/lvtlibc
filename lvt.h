@@ -264,6 +264,13 @@ char *int_to_hex(int, size_t);
  * @return Integer value converts from hex string
  */
 int hex_to_int(const char *, const char *);
+
+/**
+ * @brief Removes specified character from the string
+ * @param str string to remove character from it
+ * @param c character to remove from string
+ */
+void remove_char(char *str, char c);
 #endif // _ALGORITHMS_
 
 #endif // LVT_H
