@@ -759,4 +759,13 @@ void remove_char(char *str, char c)
     }
     *dst = '\0';
 }
+
+void remove_char_v2(const char *str_in, char *str_out, char c)
+{
+    do
+    {
+        if (*str_in++ != c)
+            *str_out++ = *str_in;
+    } while (*str_in++);
+}
 #endif // _ALGORITHMS_

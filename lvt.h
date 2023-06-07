@@ -266,11 +266,18 @@ char *int_to_hex(int, size_t);
 int hex_to_int(const char *, const char *);
 
 /**
- * @brief Removes specified character from the string
+ * @brief Removes specified character from the string (all of them)
  * @param str string to remove character from it
  * @param c character to remove from string
  */
 void remove_char(char *str, char c);
+
+/**
+ * @brief Removes specified character from the string (all of them) - version 2
+ * @param str string to remove character from it
+ * @param c character to remove from string
+ */
+void remove_char_v2(const char *str_in, char *str_out, char c);
 #endif // _ALGORITHMS_
 
 #endif // LVT_H
