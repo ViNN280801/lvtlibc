@@ -278,6 +278,16 @@ void remove_char(char *str, char c);
  * @param c character to remove from string
  */
 void remove_char_v2(const char *str_in, char *str_out, char c);
+
+/**
+ * @brief Gets the substring from the specified string 'str'
+ * @param str string to get a substring from it
+ * @param begin position of character to copy all content since it
+ * @param end position of character to copy all content until it
+ * @return Substring from 'begin' to 'end': str[begin:end].
+ * Returns 'NULL' if some error or invalid cases occures
+ */
+char *substr(const char *str, size_t begin, size_t end);
 #endif // _ALGORITHMS_
 
 #endif // LVT_H

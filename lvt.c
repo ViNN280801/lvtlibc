@@ -768,4 +768,24 @@ void remove_char_v2(const char *str_in, char *str_out, char c)
             *str_out++ = *str_in;
     } while (*str_in++);
 }
+
+char *substr(const char *str, size_t begin, size_t end)
+{
+    // Check if ending position is lower then beginning
+    // and ending position can't be greater then the length of string
+    // or 'str' is not null pointer
+    if (end <= begin || end > strlen(str) || !str)
+        return NULL;
+
+    // Allocating memory for substring
+    char *substring = (char *)calloc(end - begin, sizeof(char));
+
+    // Checking of properly allocating memory
+    if (!substring)
+        return NULL;
+
+    // Copying content from the specified string in specified interval
+    memcpy(substring, &str[begin], end - begin);
+    return substring;
+}
 #endif // _ALGORITHMS_
