@@ -1,70 +1,97 @@
 #include "lvt.h"
 
 #ifndef _PRINT_FUNCTIONS_
-void print_pint(int *__parr, size_t __arr_size)
+void print_pint(int *pint, size_t size)
 {
-    printf("\n==== ==== ==== ==== ====\nArray:\n");
-    for (size_t i = 0UL; i < __arr_size; i++)
-    {
-        printf("arr[%ld] = %d\n", i, __parr[i]);
-    }
-    printf("==== ==== ==== ==== ====\n\n");
+    for (size_t i = 0ul; i < size; i++)
+        printf("%d ", pint[i]);
+    printf("\n");
 }
 
-void print_ppint(int **__pp, size_t __rows, size_t __cols)
+void print_pchar(char *pchar, size_t size)
 {
-    printf("\n==== ==== ==== ==== ==== ==== ==== ==== ====\nMatrix:\n");
+    for (size_t i = 0ul; i < size; i++)
+        printf("%c ", pchar[i]);
+    printf("\n");
+}
+
+void print_ppint(int **ppint, size_t rows, size_t cols)
+{
     // Simple iterating over the matrix by indeces of row and column
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        for (size_t col = 0UL; col < __cols; col++)
+        for (size_t col = 0ul; col < cols; col++)
         {
-            printf("%d\t", __pp[row][col]);
+            printf("%d\t", ppint[row][col]);
         }
         printf("\n");
     }
-    printf("==== ==== ==== ==== ==== ==== ==== ==== ====\n\n");
 }
-#endif
+
+void print_ppchar(int **ppchar, size_t rows, size_t cols)
+{
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        for (size_t col = 0ul; col < cols; col++)
+        {
+            printf("%c\t", ppchar[row][col]);
+        }
+        printf("\n");
+    }
+}
+#endif // !_PRINT_FUNCTIONS_
 
 #ifndef _MEMORY_
 #ifndef _CHECK_ALLOCATING_
-bool is_alloc_pint(int *__p)
+bool is_alloc_pint(int *pint)
 {
-    return (!__p) ? false : true;
+    return (!pint) ? false : true;
 }
 
-bool is_alloc_ppint(int **__pp, size_t __rows)
+bool is_alloc_ppint(int **ppint, size_t rows)
 {
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        if (!__pp[row])
+        if (!ppint[row])
             return false;
     }
-    if (!__pp)
+    if (!ppint)
         return false;
 
     return true;
 }
 
-bool is_alloc_pchar(const char *__p)
+bool is_alloc_pchar(char *pchar)
 {
-    return (!__p) ? false : true;
+    return (!pchar) ? false : true;
 }
 
-bool is_alloc_pdouble(double *__p)
+bool is_alloc_ppchar(int **ppchar, size_t rows)
 {
-    return (!__p) ? false : true;
-}
-
-bool is_alloc_ppdouble(double **__pp, size_t __rows)
-{
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        if (!__pp[row])
+        if (!ppchar[row])
             return false;
     }
-    if (!__pp)
+    if (!ppchar)
+        return false;
+
+    return true;
+}
+
+bool is_alloc_pdouble(double *pd)
+{
+    return (!pd) ? false : true;
+}
+
+bool is_alloc_ppdouble(double **ppd, size_t rows)
+{
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        if (!ppd[row])
+            return false;
+    }
+    if (!ppd)
         return false;
 
     return true;
@@ -72,9 +99,9 @@ bool is_alloc_ppdouble(double **__pp, size_t __rows)
 #endif
 
 #ifndef _ALLOCATING_
-int *alloc_mem_pint(size_t __arr_size)
+int *alloc_mem_pint(size_t size)
 {
-    int *p = (int *)calloc(__arr_size, sizeof(int));
+    int *p = (int *)calloc(size, sizeof(int));
 
     if (!is_alloc_pint(p))
     {
@@ -85,9 +112,9 @@ int *alloc_mem_pint(size_t __arr_size)
     return p;
 }
 
-int **alloc_mem_ppint(size_t __rows, size_t __cols)
+int **alloc_mem_ppint(size_t rows, size_t cols)
 {
-    int **pp = (int **)calloc(__cols, sizeof(int *));
+    int **pp = (int **)calloc(cols, sizeof(int *));
 
     if (!pp)
     {
@@ -95,9 +122,9 @@ int **alloc_mem_ppint(size_t __rows, size_t __cols)
         exit(-1);
     }
 
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        pp[row] = (int *)calloc(__rows, sizeof(int));
+        pp[row] = (int *)calloc(rows, sizeof(int));
 
         if (!pp[row])
         {
@@ -109,9 +136,9 @@ int **alloc_mem_ppint(size_t __rows, size_t __cols)
     return pp;
 }
 
-char *alloc_mem_pchar(size_t __arr_size)
+char *alloc_mem_pchar(size_t size)
 {
-    char *p = (char *)calloc(__arr_size, sizeof(char));
+    char *p = (char *)calloc(size, sizeof(char));
 
     if (!is_alloc_pchar(p))
     {
@@ -122,22 +149,9 @@ char *alloc_mem_pchar(size_t __arr_size)
     return p;
 }
 
-double *alloc_mem_pdouble(size_t __arr_size)
+char **alloc_mem_ppchar(size_t rows, size_t cols)
 {
-    double *p = (double *)calloc(__arr_size, sizeof(double));
-
-    if (!is_alloc_pdouble(p))
-    {
-        printf("Can't allocate memory for array of doubles. Exiting with \'-1\' status\n");
-        exit(-1);
-    }
-
-    return p;
-}
-
-double **alloc_mem_ppdouble(size_t __rows, size_t __cols)
-{
-    double **pp = (double **)calloc(__cols, sizeof(double *));
+    char **pp = (char **)calloc(cols, sizeof(char *));
 
     if (!pp)
     {
@@ -145,9 +159,9 @@ double **alloc_mem_ppdouble(size_t __rows, size_t __cols)
         exit(-1);
     }
 
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        pp[row] = (double *)calloc(__rows, sizeof(double));
+        pp[row] = (char *)calloc(rows, sizeof(char));
 
         if (!pp[row])
         {
@@ -158,33 +172,101 @@ double **alloc_mem_ppdouble(size_t __rows, size_t __cols)
 
     return pp;
 }
-#endif
 
-#ifndef _DEALLOCATING_
-void dealloc_mem_pint(int *__p)
+double *alloc_mem_pdouble(size_t size)
 {
-    free(__p);
-    __p = NULL;
-}
+    double *p = (double *)calloc(size, sizeof(double));
 
-void dealloc_mem_ppint(int **__pp, size_t __rows)
-{
-    for (size_t row = 0UL; row < __rows; row++)
+    if (!is_alloc_pdouble(p))
     {
-        free(__pp[row]);
+        printf("Can't allocate memory for array of doubles. Exiting with \'-1\' status\n");
+        exit(-1);
     }
 
-    free(__pp);
-    __pp = NULL;
+    return p;
 }
 
-void dealloc_mem_pchar(char *__p)
+double **alloc_mem_ppdouble(size_t rows, size_t cols)
 {
-    free(__p);
-    __p = NULL;
+    double **pp = (double **)calloc(cols, sizeof(double *));
+
+    if (!pp)
+    {
+        printf("Can't allocate memory for each row of matrix. Exiting with \'-1\' status\n");
+        exit(-1);
+    }
+
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        pp[row] = (double *)calloc(rows, sizeof(double));
+
+        if (!pp[row])
+        {
+            printf("Can't allocate memory for each column of matrix. Exiting with \'-1\' status\n");
+            exit(-1);
+        }
+    }
+
+    return pp;
 }
-#endif
-#endif
+#endif // !_ALLOCATING_
+
+#ifndef _DEALLOCATING_
+void dealloc_mem_pint(int *pint)
+{
+    free(pint);
+    pint = NULL;
+}
+
+void dealloc_mem_ppint(int **ppint, size_t rows)
+{
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        free(ppint[row]);
+        ppint[row] = NULL;
+    }
+
+    free(ppint);
+    ppint = NULL;
+}
+
+void dealloc_mem_pchar(char *pchar)
+{
+    free(pchar);
+    pchar = NULL;
+}
+
+void dealloc_mem_ppchar(char **ppchar, size_t rows)
+{
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        free(ppchar[row]);
+        ppchar[row] = NULL;
+    }
+
+    free(ppchar);
+    ppchar = NULL;
+}
+
+void dealloc_mem_pdouble(double *pd)
+{
+    free(pd);
+    pd = NULL;
+}
+
+void dealloc_mem_ppdouble(double **ppd, size_t rows)
+{
+    for (size_t row = 0ul; row < rows; row++)
+    {
+        free(ppd[row]);
+        ppd[row] = NULL;
+    }
+
+    free(ppd);
+    ppd = NULL;
+}
+#endif // !_DEALLOCATING_
+#endif // !_MEMORY_
 
 #ifndef _INPUT_
 int input_int()
@@ -212,40 +294,38 @@ double input_double()
     return atof(buf);
 }
 
-int *input_manual_pint(size_t __size)
+int *input_manual_pint(size_t size)
 {
-    int *parr = alloc_mem_pint(__size);
+    int *parr = alloc_mem_pint(size);
 
-    for (size_t i = 0UL; i < __size; i++)
+    for (size_t i = 0ul; i < size; i++)
     {
-        printf("parr[%ld] = ", i);
+        printf("parr[%lu] = ", i);
         parr[i] = input_int();
     }
 
     return parr;
 }
 
-int *input_random_pint(size_t __size, int __num1, int __num2)
+int *input_random_pint(size_t size, int low, int high)
 {
     srand(time(NULL));
-    int *parr = alloc_mem_pint(__size);
+    int *parr = alloc_mem_pint(size);
 
     // Filling array with random integer values
-    for (size_t i = 0UL; i < __size; i++)
-    {
-        parr[i] = rand() % __num1 + __num2;
-    }
+    for (size_t i = 0ul; i < size; i++)
+        parr[i] = rand() % low + high;
 
     return parr;
 }
 
-int **input_manual_ppint(size_t __rows, size_t __cols)
+int **input_manual_ppint(size_t rows, size_t cols)
 {
-    int **matrix = alloc_mem_ppint(__rows, __cols);
+    int **matrix = alloc_mem_ppint(rows, cols);
 
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        for (size_t col = 0UL; col < __cols; col++)
+        for (size_t col = 0ul; col < cols; col++)
         {
             printf("matrix[%ld][%ld] = ", row, col);
             matrix[row][col] = input_int();
@@ -255,56 +335,54 @@ int **input_manual_ppint(size_t __rows, size_t __cols)
     return matrix;
 }
 
-int **input_random_ppint(size_t __rows, size_t __cols, int __num1, int __num2)
+int **input_random_ppint(size_t rows, size_t cols, int low, int high)
 {
-    int **matrix = alloc_mem_ppint(__rows, __cols);
-
     srand(time(NULL));
+    int **matrix = alloc_mem_ppint(rows, cols);
 
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        for (size_t col = 0UL; col < __cols; col++)
+        for (size_t col = 0ul; col < cols; col++)
         {
-            matrix[row][col] = rand() % __num1 + __num2;
+            matrix[row][col] = rand() % low + high;
         }
     }
 
     return matrix;
 }
 
-double *input_random_pdouble(size_t __size, double __min, double __max)
+double *input_random_pdouble(size_t size, double low, double high)
 {
     srand(time(NULL));
-    double *parr = alloc_mem_pdouble(__size);
+    double *parr = alloc_mem_pdouble(size);
 
     // Filling array with random integer values
-    for (size_t i = 0UL; i < __size; i++)
+    for (size_t i = 0ul; i < size; i++)
     {
         double f = (double)rand() / RAND_MAX;
-        parr[i] = __min + f * (__max - __min);
+        parr[i] = low + f * (high - low);
     }
 
     return parr;
 }
 
-double **input_random_ppdouble(size_t __rows, size_t __cols, double __min, double __max)
+double **input_random_ppdouble(size_t rows, size_t cols, double low, double high)
 {
-    double **matrix = alloc_mem_ppdouble(__rows, __cols);
-
     srand(time(NULL));
+    double **matrix = alloc_mem_ppdouble(rows, cols);
 
-    for (size_t row = 0UL; row < __rows; row++)
+    for (size_t row = 0ul; row < rows; row++)
     {
-        for (size_t col = 0UL; col < __cols; col++)
+        for (size_t col = 0ul; col < cols; col++)
         {
             double f = (double)rand() / RAND_MAX;
-            matrix[row][col] = __min + f * (__max - __min);
+            matrix[row][col] = low + f * (high - low);
         }
     }
 
     return matrix;
 }
-#endif
+#endif // !_INPUT_
 
 #ifndef _ALGORITHMS_
 
@@ -399,10 +477,10 @@ void bubbleSortMatrixAscending(int **arr, size_t rows, size_t cols)
 void insertionSortAscending(int arr[])
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
-    for (size_t i = 1UL; i < ARRSIZE(arr); i++)
+    for (size_t i = 1ul; i < ARRSIZE(arr); i++)
     {
         // Initializing position of previous element from 'i'
-        size_t j = i - 1UL;
+        size_t j = i - 1ul;
 
         // Initializing currenint value = of vector
         int value = arr[i];
@@ -448,7 +526,7 @@ void selectionSortAscending(int arr[])
         size_t minPos = i;
 
         // Iterating over the unsorted range
-        for (size_t j = i + 1UL; j < ARRSIZE(arr); j++)
+        for (size_t j = i + 1ul; j < ARRSIZE(arr); j++)
         {
             // If element from the unsorted range is lower than the current ->
             // assigning new position to 'minPos' variable
@@ -572,7 +650,7 @@ void quickSortMatrixAscending(int **arr, size_t rows, size_t cols)
 {
     int *pint = alloc_mem_pint(rows * cols);
     matrixToArr(arr, pint, rows, cols);
-    quicksort(pint, rows * cols, 0, rows * cols - 1);
+    quickSortAscending(pint);
     arrayToMatrix(pint, arr, rows, cols);
 }
 
@@ -587,7 +665,7 @@ void bubbleSortDescending(int arr[])
 void insertionSortDescending(int arr[])
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
-    for (size_t i = 1UL; i < ARRSIZE(arr); i++)
+    for (size_t i = 1ul; i < ARRSIZE(arr); i++)
     {
         // Initializing currenint value = of vector
         int val = arr[i];
@@ -617,7 +695,7 @@ void selectionSortDescending(int arr[])
         size_t maxPos = i;
 
         // Iterating over the unsorted range
-        for (size_t j = i + 1UL; j < ARRSIZE(arr); j++)
+        for (size_t j = i + 1ul; j < ARRSIZE(arr); j++)
         {
             // If element from the unsorted range is lower than the current ->
             // assigning new position to 'maxPos' variable

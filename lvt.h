@@ -10,7 +10,7 @@
 #include <ctype.h>
 
 #define FOR_INT(n) for (int i = 0; i < n; i++)
-#define FOR_SIZE_T(n) for (size_t i = 0UL; i < n; i++)
+#define FOR_SIZE_T(n) for (size_t i = 0ul; i < n; i++)
 #define FOR_INT_FROM_TO(from, to) for (int i = from; i < to; i++)
 #define FOR_SIZE_T_FROM_TO(from, to) for (size_t i = from; i < to; i++)
 #define ARRSIZE(arr) sizeof arr / sizeof *(arr)
@@ -22,8 +22,8 @@
          keep = !keep, count++)     \
         for (item = (array) + count; keep; keep = !keep)
 #define FOREACH_SIZE_T(item, array)    \
-    for (size_t keep = 1UL,            \
-                count = 0UL,           \
+    for (size_t keep = 1ul,            \
+                count = 0ul,           \
                 size = ARRSIZE(array); \
          keep && count != size;        \
          keep = !keep, count++)        \
@@ -37,102 +37,318 @@
         memcpy(&x, swap_temp, sizeof(x));                                         \
     }
 
-#ifndef _PRINT_FUNCTIONS_
-/// @brief Prints array on terminal (other types is similar)
-void print_pint(int *, size_t);
+#define VARNAME(var) #var
 
-/// @brief Prints matrix on terminal (other types is similar)
-void print_ppint(int **, size_t, size_t);
-#endif // _PRINT_FUNCTIONS_
+#if __STDC_VERSION__ >= 201112L
+#define TYPEOF(var) _Generic((var),                   \
+    _Bool: "_Bool",                                   \
+    unsigned char: "unsigned char",                   \
+    char: "char",                                     \
+    signed char: "signed char",                       \
+    short int: "short int",                           \
+    unsigned short int: "unsigned short int",         \
+    int: "int",                                       \
+    unsigned int: "unsigned int",                     \
+    long int: "long int",                             \
+    unsigned long int: "unsigned long int",           \
+    long long int: "long long int",                   \
+    unsigned long long int: "unsigned long long int", \
+    float: "float",                                   \
+    double: "double",                                 \
+    long double: "long double",                       \
+    char *: "char *",                                 \
+    void *: "void *",                                 \
+    int *: "int *",                                   \
+    default: "other")
+
+#define PRINT_ARR(p, size) _Generic((p, size), \
+    int *: print_pint,                         \
+    char *: print_pchar,                       \
+    default: print_pint)(p, size)
+
+#define PRINT_MATRIX(pp, rows, cols) _Generic((pp, rows, cols), \
+    int **: print_ppint,                                        \
+    char **: print_ppchar,                                      \
+    default: print_ppint)(pp, rows, cols)
+
+#define IS_ALLOC_P(p) _Generic((p), \
+    int *: is_alloc_pint,           \
+    char *: is_alloc_pchar,         \
+    double *: is_alloc_pdouble,     \
+    default: is_alloc_pint)(p)
+
+#define IS_ALLOC_PP(p, rows) _Generic((p, rows), \
+    int **: is_alloc_ppint,                      \
+    char **: is_alloc_ppchar,                    \
+    double **: is_alloc_ppdouble,                \
+    default: is_alloc_ppint)(p, rows)
+
+#define ALLOC_MEM_P(p, size) _Generic((p, size), \
+    int *: alloc_mem_pint,                       \
+    char *: alloc_mem_pchar,                     \
+    double *: alloc_mem_pdouble,                 \
+    default: alloc_mem_pint)(p, size)
+
+#define ALLOC_MEM_PP(p, rows, cols) _Generic((p, rows, cols), \
+    int **: alloc_mem_ppint,                                  \
+    char **: alloc_mem_ppchar,                                \
+    double **: alloc_mem_ppdouble,                            \
+    default: alloc_mem_ppint)(p, rows, cols)
+
+#define DEALLOC_MEM_P(p) _Generic((p), \
+    int *: dealloc_mem_pint,           \
+    char *: dealloc_mem_pchar,         \
+    double *: dealloc_mem_pdouble,     \
+    default: dealloc_mem_pint)(p)
+
+#define DEALLOC_MEM_PP(p, size) _Generic((p, size), \
+    int **: dealloc_mem_ppint,                      \
+    char **: dealloc_mem_ppchar,                    \
+    double **: dealloc_mem_ppdouble,                \
+    default: dealloc_mem_ppint)(p, size)
+#endif // !__STDC_VERSION__
+
+#ifndef _PRINT_FUNCTIONS_
+/**
+ * @brief Prints array on terminal(other types are similar)
+ * @param __pint pointer on integer
+ * @param __Size size of array (allocated memory for 'pint' pointer)
+ */
+void print_pint(int *pint, size_t size);
+
+/**
+ * @brief Prints array on terminal(other types are similar)
+ * @param pchar pointer on char
+ * @param size size of array (allocated memory for 'pchar' pointer)
+ */
+void print_pchar(char *pchar, size_t size);
+
+/**
+ * @brief Prints matrix on terminal(other types are similar)
+ * @param ppint matrix
+ * @param rows count of rows
+ * @param col count of columns
+ */
+void print_ppint(int **ppint, size_t rows, size_t cols);
+
+/**
+ * @brief Prints matrix on terminal(other types are similar)
+ * @param ppchar matrix
+ * @param rows count of rows
+ * @param col count of columns
+ */
+void print_ppchar(int **ppchar, size_t rows, size_t cols);
+#endif // !_PRINT_FUNCTIONS_
 
 #ifndef _MEMORY_
 #ifndef _CHECK_ALLOCATING_
-/// @return "true" if memory for int
-/// array was allocated correctly
-/// Otherwise returns "false" (other types is similar)
-bool is_alloc_pint(int *);
+/**
+ * @param pint pointer on integer
+ * @return "true" if memory for int
+ * array was allocated correctly
+ * Otherwise returns "false"(other types are similar)
+ */
+bool is_alloc_pint(int *pint);
 
-/// @return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppint(int **, size_t);
+/**
+ * @param ppint matrix
+ * @param rows count of rows of matrix
+ * @return "true" if memory of matrix allocated correctly (other types are similar)
+ */
+bool is_alloc_ppint(int **ppint, size_t rows);
 
-/// @return Returns "true" if memory for char
-/// array was allocated correctly
-/// Otherwise returns "false" (other types is similar)
-bool is_alloc_pchar(const char *__p);
+/**
+ * @param pchar pointer on "char"
+ * @return "true" if memory for "char"
+ * array was allocated correctly
+ * Otherwise returns "false"
+ */
+bool is_alloc_pchar(char *pchar);
 
-/// @return "true" if memory for double
-/// of array was allocated correctly
-/// Otherwise returns "false" (other types is similar)
-bool is_alloc_pdouble(double *);
+/**
+ * @brief Checks if passed ptr on ptr (int **) is allocated
+ * @param ppchar matrix
+ * @param rows count of rows of matrix
+ * @return "true" if memory of matrix allocated correctly (other types are similar)
+ */
+bool is_alloc_ppchar(int **ppchar, size_t rows);
 
-/// @brief Checker for correctly allocating of memory
-/// @return "true" if memory of matrix allocated correctly  (other types is similar)
-bool is_alloc_ppdouble(double **, size_t);
-#endif // _CHECK_ALLOCATING_
+/**
+ * @brief Checks if passed ptr on ptr (double **) is allocated
+ * @param pd pointer on "double"
+ * @return "true" if memory for "double"
+ * array was allocated correctly
+ * Otherwise returns "false"
+ */
+bool is_alloc_pdouble(double *pd);
+
+/**
+ * @brief Checks if passed ptr on ptr (double **) is allocated
+ * @param ppd matrix
+ * @param rows count of rows of matrix
+ * @return "true" if memory of matrix allocated correctly (other types are similar)
+ */
+bool is_alloc_ppdouble(double **ppd, size_t size);
+#endif // !_CHECK_ALLOCATING_
 
 #ifndef _ALLOCATING_
-/// @brief Allocates memory for int array with cheking on correctness
-/// Exiting with status '-1' if can't allocate memory (other types is similar)
-int *alloc_mem_pint(size_t);
+/**
+ * @brief Allocates memory for int array with cheking on correctness
+ * Exiting with status '-1' if can't allocate memory (other types are similar)
+ * @param size size of the array to allocate
+ * @return Pointer to allocated memory
+ */
+int *alloc_mem_pint(size_t size);
 
-/// @brief Allocates memory to matrix with checkings on correctness of allocating
-/// @return Pointer on a matrix of integer values (other types is similar)
-int **alloc_mem_ppint(size_t, size_t);
+/**
+ * @brief Allocates memory to matrix with checkings on correctness of allocating
+ * @param rows count of rows
+ * @param cols count of columns
+ * @return Pointer on a matrix
+ */
+int **alloc_mem_ppint(size_t rows, size_t cols);
 
-/// @brief Allocates memory for 'double' array with cheking on correctness
-/// Exiting with status '-1' if can't allocate memory (other types is similar)
-double *alloc_mem_pdouble(size_t);
+/**
+ * @brief Allocates memory for int array with cheking on correctness
+ * Exiting with status '-1' if can't allocate memory
+ * @param size size of the array to allocate
+ * @return Pointer to allocated memory
+ */
+char *alloc_mem_pchar(size_t size);
 
-/// @brief Allocates memory to matrix with checkings on correctness of allocating
-/// @return Pointer on a matrix of doubles values
-double **alloc_mem_ppdouble(size_t, size_t);
-#endif // _ALLOCATING_
+/**
+ * @brief Allocates memory to matrix with checkings on correctness of allocating
+ * @param rows count of rows
+ * @param cols count of columns
+ * @return Pointer on a matrix
+ */
+char **alloc_mem_ppchar(size_t rows, size_t cols);
+
+/**
+ * @brief Allocates memory for int array with cheking on correctness
+ * Exiting with status '-1' if can't allocate memory
+ * @param size size of the array to allocate
+ * @return Pointer to allocated memory
+ */
+double *alloc_mem_pdouble(size_t size);
+
+/**
+ * @brief Allocates memory to matrix with checkings on correctness of allocating
+ * @param rows count of rows
+ * @param cols count of columns
+ * @return Pointer on a matrix
+ */
+double **alloc_mem_ppdouble(size_t rows, size_t cols);
+#endif // !_ALLOCATING_
 
 #ifndef _DEALLOCATING_
-/// @brief Deallocating memory of int pointer (other types is similar)
-void dealloc_mem_pint(int *__p);
+/**
+ * @brief Deallocates memory of matrix
+ * @param pint pointer on array
+ */
+void dealloc_mem_pint(int *pint);
 
-/// @brief Deallocating memory of pointer (other types is similar)
-void dealloc_mem_ppint(int **, size_t);
+/**
+ * @brief Deallocates memory of matrix
+ * @param ppint pointer on matrix
+ * @param rows count of rows in matrix
+ */
+void dealloc_mem_ppint(int **ppint, size_t rows);
 
-/// @brief Deallocating memory of char pointer (other types is similar)
-void dealloc_mem_pchar(char *);
-#endif // _DEALLOCATING_
-#endif // _MEMORY_
+/**
+ * @brief Deallocates memory of matrix
+ * @param pchar pointer on array
+ */
+void dealloc_mem_pchar(char *pchar);
+
+/**
+ * @brief Deallocates memory of matrix
+ * @param ppchar pointer on matrix
+ * @param rows count of rows in matrix
+ */
+void dealloc_mem_ppchar(char **ppchar, size_t rows);
+
+/**
+ * @brief Deallocates memory of matrix
+ * @param pd pointer on array
+ */
+void dealloc_mem_pdouble(double *pd);
+
+/**
+ * @brief Deallocates memory of matrix
+ * @param ppd pointer on matrix
+ * @param rows count of rows in matrix
+ */
+void dealloc_mem_ppdouble(double **ppd, size_t rows);
+#endif // !_DEALLOCATING_
+#endif // !_MEMORY_
 
 #ifndef _INPUT_
-/// @brief Handles an error when a user enters a character or string
-/// when asked to enter a number. Returns the number entered by the user
+/**
+ * @brief Handles an error when a user enters a character or string when asked to enter a number
+ * @return Number entered by the user
+ */
 int input_int();
 
-/// @brief Handles an error when a user enters a character or string
-/// when asked to enter a number. Returns the double number entered by the user
+/**
+ * @brief Handles an error when a user enters a character or string
+ * when asked to enter a number
+ * @return The double number entered by the user
+ */
 double input_double();
 
-/// @return an integer array, which is filled with a manually entered values
-int *input_manual_pint(size_t);
+/**
+ * @brief Inputting array manually
+ * @return An integer array, which is filled with a manually entered values
+ */
+int *input_manual_pint(size_t size);
 
-/// @return an integer array, which is filled with a random numbers
-/// "rand % __num1" returns numbers from 0 to '__num1'
-/// adding '__num2' gives number between '__num2' and '__num1 + __num2'
-int *input_random_pint(size_t, int, int);
+/**
+ * @brief Inputting array random
+ * "rand % low" returns numbers from 0 to 'low'
+ * adding 'high' gives number between 'high' and 'low + high'
+ * @param size count of element in array
+ * @param low lowest value in range
+ * @param high highest value in range
+ * @return An integer array, which is filled with a random numbers
+ */
+int *input_random_pint(size_t size, int low, int high);
 
-/// @return an integer matrix, which is filled with a manually entered values
-int **input_manual_ppint(size_t, size_t);
+/**
+ * @brief Inputting matrix manually
+ * @param rows count of rows
+ * @param cols count of columns
+ * @return an integer matrix, which is filled with a manually entered values
+ */
+int **input_manual_ppint(size_t rows, size_t cols);
 
-/// @return an integer matrix, which is filled with a random numbers
-int **input_random_ppint(size_t, size_t, int, int);
+/**
+ * @brief Inputting matrix by random values
+ * @param rows count of rows
+ * @param cols count of columns
+ * @return An integer matrix, which is filled with a manually entered values
+ */
+int **input_random_ppint(size_t rows, size_t cols, int low, int high);
 
-/// @return a 'double' array, which is filled with a random numbers
-double *input_random_pdouble(size_t, double, double);
+/**
+ * @brief Filling double array randomly
+ * @param size count of elements to spawn
+ * @param low lowest value in range
+ * @param high highest value in range
+ * @return A 'double' array, which is filled with a random numbers
+ */
+double *input_random_pdouble(size_t size, double low, double high);
 
-/// @brief Allocates memory for char array with cheking on correctness
-/// Exiting with status '-1' if can't allocate memory (other types is similar)
-char *alloc_mem_pchar(size_t);
-
-/// @return A 'double' matrix, which is filled with a random numbers
-double **input_random_ppdouble(size_t, size_t, double, double);
-#endif // _INPUT_
+/**
+ * @brief Filling double matrix randomly
+ * @param rows count of rows
+ * @param cols count of columns
+ * @param low lowest value in range
+ * @param high highest value in range
+ * @return A 'double' matrix, which is filled with a random numbers
+ */
+double **input_random_ppdouble(size_t rows, size_t cols, double low, double high);
+#endif // !_INPUT_
 
 #ifndef _ALGORITHMS_
 /// @return count of digits of specified number
@@ -208,7 +424,7 @@ void quickSortDescending(int[]);
  * @param rows count of rows
  * @param cols count of columns
  */
-void matrixToArr(int **, int *, size_t, size_t);
+void matrixToArr(int **src, int *dest, size_t rows, size_t cols);
 
 /**
  * @brief Converting array to a matrix (other types similar)
@@ -217,14 +433,14 @@ void matrixToArr(int **, int *, size_t, size_t);
  * @param rows count of rows
  * @param cols count of columns
  */
-void arrayToMatrix(int *, int **, size_t, size_t);
+void arrayToMatrix(int *src, int **dest, size_t rows, size_t cols);
 
 /**
  * @brief Converts string represented in hex to "unsigned long" type value
  * @param str string to convert
  * @return Converting of hex result
  */
-unsigned long hex_to_ulong(const char *);
+unsigned long hex_to_ulong(const char *str);
 
 /**
  * @brief Converts all of string characters to uppercase
@@ -238,14 +454,14 @@ unsigned long hex_to_ulong(const char *);
  * @param str string to modify
  * @return Pointer to new string (!!! Do not forget to deallocate memory !!!)
  */
-char *str_to_upper(char *);
+char *str_to_upper(char *str);
 
 /**
  * @brief Converts all of string characters to lowercase.
  * @param str string to modify
  * @return Pointer to new string (!!! Do not forget to deallocate memory !!!)
  */
-char *str_to_lower(char *);
+char *str_to_lower(char *str);
 
 /**
  * @brief Converts integer value to a hex string
@@ -255,7 +471,7 @@ char *str_to_lower(char *);
  * for the additional terminating null character. [src: https://cplusplus.com/reference/cstdio/snprintf/]
  * @return Hex string represented as "char *" (!!! Don't forget to deallocate memory !!!)
  */
-char *int_to_hex(int, size_t);
+char *int_to_hex(int value, size_t maxlen);
 
 /**
  * @brief Converts hex string to an integer value
@@ -263,7 +479,7 @@ char *int_to_hex(int, size_t);
  * @param format format to display (0xFF; 0xff; FF -> 255)
  * @return Integer value converts from hex string
  */
-int hex_to_int(const char *, const char *);
+int hex_to_int(const char *hex, const char *format);
 
 /**
  * @brief Removes specified character from the string (all of them)
@@ -288,6 +504,6 @@ void remove_char_v2(const char *str_in, char *str_out, char c);
  * Returns 'NULL' if some error or invalid cases occures
  */
 char *substr(const char *str, size_t begin, size_t end);
-#endif // _ALGORITHMS_
+#endif // !_ALGORITHMS_
 
-#endif // LVT_H
+#endif // !LVT_H
