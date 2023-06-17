@@ -652,5 +652,4 @@ void insert_ch_to_str(const char *restrict src, char **dest, size_t pos, char c)
  */
 void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const char *restrict str);
 #endif // !_ALGORITHMS_
-
 #endif // !LVT_H
