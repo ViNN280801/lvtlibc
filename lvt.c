@@ -854,10 +854,10 @@ char *substr(const char *str, size_t begin, size_t end)
     return substring;
 }
 
-void insert(const char *restrict src, char **dest, size_t pos, char c)
+void insert_ch_to_str(const char *restrict src, char **dest, size_t pos, char c)
 {
     // Initializing variable that stores size of source string and size of the destination string
-    // (+2 because: +1 -> for passed char 'c'; another +1 -> to end symbol ('\0'))
+    // (+2 because: +1 -> for passed char 'c'; another +1 -> to add end symbol ('\0'))
     size_t srcsize = strlen(src) + 1ul, destsize = strlen(src) + 2ul;
 
     // Do some checks to avoid perform unnecessary work with passed source string
@@ -879,6 +879,44 @@ void insert(const char *restrict src, char **dest, size_t pos, char c)
         {
             pdest[dest_idx] = c;
             dest_idx++;
+        }
+        pdest[dest_idx] = src[src_idx];
+        dest_idx++;
+    }
+
+    // Adding end of string symbol ('\0') to the end of the result string
+    // to specify it's end
+    pdest[destsize] = 0x00;
+
+    // Reassigning pointer on temporary array to buffer 'dest'
+    *dest = pdest;
+}
+
+void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const char *restrict str)
+{
+    // Initializing variable that stores size of source string and size of the destination string
+    // (+2 because: + size of 'str' -> for passed string 'str'; +1 -> to add end symbol ('\0'))
+    size_t srcsize = strlen(src) + 1ul, destsize = srcsize + strlen(str) + 1ul;
+
+    // Do some checks to avoid perform unnecessary work with passed source string
+    if (!src || srcsize == 0ul || pos >= srcsize)
+        return;
+
+    // Allocating memory for result string
+    char *pdest = (char *)calloc(destsize, sizeof(char));
+
+    // Check pointer on properly allocated memory
+    if (!pdest)
+        return;
+
+    // Copying characters one by one to the destination string
+    for (size_t src_idx = 0ul, dest_idx = 0ul; src_idx < srcsize; src_idx++)
+    {
+        // If index equals passed index 'pos' - assigning specified char
+        if (src_idx == pos)
+        {
+            strcat(pdest, str);
+            dest_idx += strlen(str);
         }
         pdest[dest_idx] = src[src_idx];
         dest_idx++;

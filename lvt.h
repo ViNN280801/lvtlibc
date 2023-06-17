@@ -620,15 +620,37 @@ char *substr(const char *str, size_t begin, size_t end);
 
 /**
  * @brief Adds specified character into passed string to certain position
+ * (!!! DO NOT FORGET TO DEALLOC MEMORY FOR 'dest' !!!)
  * Usage hint:
- * char *s = NULL;
- * insert("Hello, World!", &s, i, 'a');
+ * char *s = "Hello, World!";
+ * char *buf = NULL;
+ * insert_ch_to_str(s, &buf, 3, '*');
+ * free(buf);
+ * If you want to print result do not forget check if 'buf' is "NULL", because if it "NULL"
+ * "printf()" func invokes "Segmentation fault" or another error
  * @param src source string
  * @param dest buffer to store new modified string complicated with old string 'src'
  * @param pos position to insert character
- * @param c char to append it
+ * @param c char to append it in certain position
  */
-void insert(const char *restrict src, char **dest, size_t pos, char c);
+void insert_ch_to_str(const char *restrict src, char **dest, size_t pos, char c);
+
+/**
+ * @brief Adds specified character into passed string to certain position
+ * (!!! DO NOT FORGET TO DEALLOC MEMORY FOR 'dest' !!!)
+ * Usage hint:
+ * char *s = "Hello, World!";
+ * char *buf = NULL;
+ * insert_str_to_str(s, &buf, 7, "THIS IS STRING");
+ * free(buf);
+ * If you want to print result do not forget check if 'buf' is "NULL", because if it "NULL"
+ * "printf()" func invokes "Segmentation fault" or another error
+ * @param src source string
+ * @param dest buffer to store new modified string complicated with old string 'src'
+ * @param pos position to insert character
+ * @param str string to append it in certain position
+ */
+void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const char *restrict str);
 #endif // !_ALGORITHMS_
 
 #endif // !LVT_H
