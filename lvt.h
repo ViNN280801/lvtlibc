@@ -351,71 +351,184 @@ double **input_random_ppdouble(size_t rows, size_t cols, double low, double high
 #endif // !_INPUT_
 
 #ifndef _ALGORITHMS_
-/// @return count of digits of specified number
-int get_count_of_digits_in_number(int);
+/**
+ * @brief Counts number of digits in a number 'n'
+ * @param n specified number to count it digits
+ * @return Count of digits in number 'n'
+ */
+int get_count_of_digits_in_number(int n);
 
-/// @return count of digits of specified number (using math.h)
-int get_count_of_digits_in_number_v2(int);
+/**
+ * @brief Counts number of digits in a number 'n' (uses "math.h")
+ * @param n specified number to count it digits
+ * @return Count of digits in number 'n'
+ */
+int get_count_of_digits_in_number_v2(int n);
 
-/// @return array of digits of a number in descending order
-int *split_number_on_digits(int);
+/**
+ * @brief Splits number on digits
+ * @param n specified number
+ * @return Array of digits of a number in descending order
+ */
+int *split_number_on_digits(int n);
 
-/// @brief Reversing number
-void reverse_pint(int *, int);
+/**
+ * @brief Reversing number
+ * @param pint array of integers to reverse them
+ * @param size size of array 'pint'
+ */
+void reverse_pint(int *pint, int size);
 
-/// @return char array from integer value
-char *int_to_pchar(int);
+/**
+ * @brief Turns number to string representation
+ * @param n specified number
+ * @return Char array from integer value
+ */
+char *int_to_pchar(int n);
 
-/// @return "true" if passed argument 'num' is a prime number
-bool is_prime(int);
+/**
+ * @brief Checks if specified number is prime
+ * @param n specified number
+ * @return "true" if passed argument 'num' is a prime number
+ */
+bool is_prime(int n);
 
-/// @brief Sorting 1d array by bubble sorting algorithm
-void bubbleSortAscending(int[]);
+/**
+ * @brief Sorting 1d array by bubble sorting algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void bubbleSortAscending(int *arr, size_t size);
 
-/// @brief Sorting matrix with bubble sort algorithm
-void bubbleSortMatrixAscending(int **, size_t, size_t);
+/**
+ * @brief Sorting matrix with bubble sort algorithm
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void bubbleSortMatrixAscending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Sorting elems in array. Best case - O(n). Middle and worst cases - O(n^2)
-void insertionSortAscending(int[]);
+/**
+ * @brief Sorting elems in array. Best case - O(n). Middle and worst cases - O(n^2)
+ * @param arr array
+ * @param size size of specified array
+ */
+void insertionSortAscending(int *arr, size_t size);
 
-/// @brief Sorting elems in matrix. Best case - O(n). Middle and worst cases - O(n^2)
-void insertionSortMatrixAscending(int **, size_t, size_t);
+/**
+ * @brief Sorting elems in matrix. Best case - O(n). Middle and worst cases - O(n^2)
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void insertionSortMatrixAscending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Sorting array by selection algorithm (the lowest perfonamce algorithm)
-void selectionSortAscending(int[]);
+/**
+ * @brief Sorting array by selection algorithm (the lowest perfonamce algorithm)
+ * @param arr array
+ * @param size size of specified array
+ */
+void selectionSortAscending(int *arr, size_t size);
 
-/// @brief Sorting matrix by selection algorithm
-void selectionSortMatrixAscending(int **, size_t, size_t);
+/**
+ * @brief Sorting matrix by selection algorithm
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void selectionSortMatrixAscending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Sorting array by Shell sorting algorithm
-void ShellSortAscending(int[]);
+/**
+ * @brief Sorting array by Shell sorting algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void ShellSortAscending(int *arr, size_t size);
 
-/// @brief Sorting matrix by Shell sorting algorithm
-void ShellSortMatrixAscending(int **, size_t, size_t);
+/**
+ * @brief Sorting matrix by Shell sorting algorithm
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void ShellSortMatrixAscending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Auxiliary method for quick sort algortihm
-void qSortAscending(int[], size_t, size_t);
+/**
+ * @brief Auxiliary method for quick sort algortihm
+ * @param arr array
+ * @param size size of specified array
+ * @param low left border
+ * @param high right border
+ */
+void qSortAscending(int *arr, size_t size, size_t low, size_t high);
 
-/// @brief Sorting array by quick sorting (Hoare sort) algorithm
-void quickSortAscending(int[]);
+/**
+ * @brief Sorting array by quick sorting (Hoare sort) algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void quickSortAscending(int *arr, size_t size);
 
-/// @brief Sorting matrix by quick sorting (Hoare sort) algorithm
-void quickSortMatrixAscending(int **, size_t, size_t);
+/**
+ * @brief Sorting matrix by quick sorting (Hoare sort) algorithm
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void quickSortMatrixAscending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Sorting elems in array. Best case - O(n). Middle and worst cases - O(n^2)
-void insertionSortDescending(int[]);
+/**
+ * @brief Sorting 1d array by bubble sorting algorithm in descending order
+ * @param arr array
+ * @param size size of specified array
+ */
+void bubbleSortDescending(int *arr, size_t size);
 
-/// @brief Sorting array by selection algorithm (the lowest perfonamce algorithm)
-void selectionSortDescending(int[]);
+/**
+ * @brief Sorting matrix with bubble sort algorithm in descending order
+ * @param matrix matrix
+ * @param rows count of rows in matrix
+ * @param cols count of columns in matrix
+ */
+void bubbleSortMatrixDescending(int **matrix, size_t rows, size_t cols);
 
-/// @brief Sorting array by Shell sorting algorithm
-void ShellSortDescending(int[]);
+/**
+ * @brief Sorting elems in array in descending order
+ * Best case - O(n). Middle and worst cases - O(n^2)
+ * @param arr array
+ * @param size size of specified array
+ */
+void insertionSortDescending(int *arr, size_t size);
 
-/// @brief Auxiliary method for quick sort algortihm
-void qSortDescending(int[], size_t, size_t);
+/**
+ * @brief Sorting array in descending order by selection algorithm (the lowest perfonamce algorithm)
+ * @param arr array
+ * @param size size of specified array
+ */
+void selectionSortDescending(int *arr, size_t size);
 
-/// @brief Sorting array by quick sorting (Hoare sort) algorithm
-void quickSortDescending(int[]);
+/**
+ * @brief Sorting array in descending order by Shell sorting algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void ShellSortDescending(int *arr, size_t size);
+
+/**
+ * @brief Auxiliary method for quick sort algortihm
+ * @param arr array
+ * @param size size of specified array
+ * @param low left border
+ * @param high right border
+ */
+void qSortDescending(int *arr, size_t size, size_t low, size_t hight);
+
+/**
+ * @brief Sorting array in descending order by quick sorting (Hoare sort) algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void quickSortDescending(int *arr, size_t size);
 
 /**
  * @brief Converting int matrix to an array (other types similar)
@@ -504,6 +617,18 @@ void remove_char_v2(const char *str_in, char *str_out, char c);
  * Returns 'NULL' if some error or invalid cases occures
  */
 char *substr(const char *str, size_t begin, size_t end);
+
+/**
+ * @brief Adds specified character into passed string to certain position
+ * Usage hint:
+ * char *s = NULL;
+ * insert("Hello, World!", &s, i, 'a');
+ * @param src source string
+ * @param dest buffer to store new modified string complicated with old string 'src'
+ * @param pos position to insert character
+ * @param c char to append it
+ */
+void insert(const char *restrict src, char **dest, size_t pos, char c);
 #endif // !_ALGORITHMS_
 
 #endif // !LVT_H

@@ -385,12 +385,6 @@ double **input_random_ppdouble(size_t rows, size_t cols, double low, double high
 #endif // !_INPUT_
 
 #ifndef _ALGORITHMS_
-
-/**
- * @brief Counts number of digits in a number 'n'
- * @param n specified number to count it digits
- * @return Count of digits in number 'n'
- */
 int get_count_of_digits_in_number(int n)
 {
     int size = 0;
@@ -429,55 +423,50 @@ void reverse_pint(int *pint, int size)
     }
 }
 
-char *int_to_pchar(int num)
+char *int_to_pchar(int n)
 {
-    int size = log10(num) + 1;
+    int size = log10(n) + 1;
     char *pChar = alloc_mem_pchar((size_t)size);
-    for (int i = size - 1; i >= 0; i--, num /= 10)
-    {
-        pChar[i] = (num % 10) + '0';
-    }
+    for (int i = size - 1; i >= 0; i--, n /= 10)
+        pChar[i] = (n % 10) + '0';
     return pChar;
 }
 
-bool is_prime(int num)
+bool is_prime(int n)
 {
-    if (num <= 0)
+    if (n <= 0)
         return false;
 
-    for (int i = 2; i <= (int)sqrt(num); i++)
-    {
-        if (num % i == 0)
+    for (int i = 2; i <= (int)sqrt(n); i++)
+        if (n % i == 0)
             return false;
-    }
+
     return true;
 }
 
-void bubbleSortAscending(int arr[])
+void bubbleSortAscending(int *arr, size_t size)
 {
-    for (size_t i = 0; i < ARRSIZE(arr); i++)
-        for (size_t j = 0; j < ARRSIZE(arr); j++)
+    for (size_t i = 0; i < size; i++)
+        for (size_t j = 0; j < size; j++)
             if (arr[i] < arr[j])
                 SWAP(arr[i], arr[j]);
 }
 
-void bubbleSortMatrixAscending(int **arr, size_t rows, size_t cols)
+void bubbleSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     // Perform bubble sort on the diagonal elements
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < rows; j++)
             for (int k = 0; k < cols; k++)
                 for (int m = 0; m < cols; m++)
-                    if (arr[i][k] < arr[j][m])
-                    {
-                        SWAP(arr[i][k], arr[j][m]);
-                    }
+                    if (matrix[i][k] < matrix[j][m])
+                        SWAP(matrix[i][k], matrix[j][m]);
 }
 
-void insertionSortAscending(int arr[])
+void insertionSortAscending(int *arr, size_t size)
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
-    for (size_t i = 1ul; i < ARRSIZE(arr); i++)
+    for (size_t i = 1ul; i < size; i++)
     {
         // Initializing position of previous element from 'i'
         size_t j = i - 1ul;
@@ -488,7 +477,7 @@ void insertionSortAscending(int arr[])
         // While position of prev element is lower than size of vector
         // and element in this position is bigger than currenint value = ->
         // assigning it to next element (j + 1) of vector
-        while (j < ARRSIZE(arr) && arr[j] > value)
+        while (j < size && arr[j] > value)
         {
             arr[j + 1] = arr[j];
             j--;
@@ -498,10 +487,10 @@ void insertionSortAscending(int arr[])
     }
 }
 
-void insertionSortMatrixAscending(int **arr, size_t rows, size_t cols)
+void insertionSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     int *pint = alloc_mem_pint(rows * cols);
-    matrixToArr(arr, pint, rows, cols);
+    matrixToArr(matrix, pint, rows, cols);
     for (size_t i = 1; i < rows * cols; i++)
     {
         int val = pint[i];
@@ -513,72 +502,70 @@ void insertionSortMatrixAscending(int **arr, size_t rows, size_t cols)
         }
         pint[pos + 1] = val;
     }
-
-    arrayToMatrix(pint, arr, rows, cols);
+    arrayToMatrix(pint, matrix, rows, cols);
 }
 
-void selectionSortAscending(int arr[])
+void selectionSortAscending(int *arr, size_t size)
 {
     // Iterating over the range
-    for (size_t i = 0; i < ARRSIZE(arr); i++)
+    for (size_t i = 0; i < size; i++)
     {
         // For example, minimal element is begin element of the vector
         size_t minPos = i;
 
         // Iterating over the unsorted range
-        for (size_t j = i + 1ul; j < ARRSIZE(arr); j++)
-        {
+        for (size_t j = i + 1ul; j < size; j++)
             // If element from the unsorted range is lower than the current ->
             // assigning new position to 'minPos' variable
             if (arr[j] < arr[minPos])
                 minPos = j;
-        }
+
         // Swap minimal element with current
         SWAP(arr[i], arr[minPos]);
     }
 }
 
-void selectionSortMatrixAscending(int **arr, size_t rows, size_t cols)
+void selectionSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     for (size_t row = 0; row < rows; row++)
     {
         for (size_t col = 0; col < cols; col++)
         {
             size_t minRow = row, minCol = col;
-            int min = arr[row][col];
+            int min = matrix[row][col];
 
             for (size_t j = col + 1; j < cols; j++)
             {
-                if (arr[row][j] < min)
+                if (matrix[row][j] < min)
                 {
                     minRow = row;
                     minCol = j;
-                    min = arr[row][j];
+                    min = matrix[row][j];
                 }
             }
             for (size_t i = row + 1; i < rows; i++)
             {
                 for (size_t j = 0; j < cols; j++)
                 {
-                    if (arr[i][j] < min)
+                    if (matrix[i][j] < min)
                     {
                         minRow = i;
                         minCol = j;
-                        min = arr[i][j];
+                        min = matrix[i][j];
                     }
                 }
             }
-            arr[minRow][minCol] = arr[row][col];
-            SWAP(arr[row][col], min);
+            matrix[minRow][minCol] = matrix[row][col];
+            SWAP(matrix[row][col], min);
         }
     }
 }
 
-void ShellSortAscending(int arr[])
+void ShellSortAscending(int *arr, size_t size)
 {
-    for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
+    for (size_t interval = size / 2; interval > 0; interval /= 2)
     {
-        for (size_t i = 0; i < ARRSIZE(arr); i++)
+        for (size_t i = 0; i < size; i++)
         {
             int val = arr[i];
             size_t j = 0;
@@ -591,10 +578,10 @@ void ShellSortAscending(int arr[])
     }
 }
 
-void ShellSortMatrixAscending(int **arr, size_t rows, size_t cols)
+void ShellSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     int *pint = alloc_mem_pint(rows * cols);
-    matrixToArr(arr, pint, rows, cols);
+    matrixToArr(matrix, pint, rows, cols);
     for (size_t gap = rows * cols / 2; gap > 0; gap /= 2)
     {
         for (size_t i = gap; i < rows * cols; i++)
@@ -609,22 +596,23 @@ void ShellSortMatrixAscending(int **arr, size_t rows, size_t cols)
             pint[j] = temp;
         }
     }
-    arrayToMatrix(pint, arr, rows, cols);
+    arrayToMatrix(pint, matrix, rows, cols);
 }
 
-void qSortAscending(int arr[], size_t low, size_t high)
+void qSortAscending(int *arr, size_t size, size_t low, size_t high)
 {
     size_t i = low, j = high;
-    // Select pivoint value =
+
+    // Select pivot value
     int pivot = arr[(i + j) / 2], tmp = 0;
 
-    while (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+    while (i <= j && i < size && j < size)
     {
-        while (arr[i] < pivot && i < ARRSIZE(arr))
+        while (arr[i] < pivot && i < size)
             i++;
-        while (arr[j] > pivot && j < ARRSIZE(arr))
+        while (arr[j] > pivot && j < size)
             j--;
-        if (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+        if (i <= j && i < size && j < size)
         {
             tmp = arr[i];
             arr[i] = arr[j];
@@ -634,38 +622,45 @@ void qSortAscending(int arr[], size_t low, size_t high)
         }
     }
     // Recursive call sorting to left side from pivot
-    if (j > low && j < ARRSIZE(arr))
-        qSortAscending(arr, low, j);
+    if (j > low && j < size)
+        qSortAscending(arr, size, low, j);
     // Recursive call sorting to right side from pivot
-    if (i < high && i < ARRSIZE(arr))
-        qSortAscending(arr, i, high);
+    if (i < high && i < size)
+        qSortAscending(arr, size, i, high);
 }
 
-void quickSortAscending(int arr[])
-{
-    qSortAscending(arr, 0, ARRSIZE(arr) - 1);
-}
+void quickSortAscending(int *arr, size_t size) { qSortAscending(arr, size, 0, size - 1); }
 
-void quickSortMatrixAscending(int **arr, size_t rows, size_t cols)
+void quickSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     int *pint = alloc_mem_pint(rows * cols);
-    matrixToArr(arr, pint, rows, cols);
-    quickSortAscending(pint);
-    arrayToMatrix(pint, arr, rows, cols);
+    matrixToArr(matrix, pint, rows, cols);
+    quickSortAscending(pint, rows * cols);
+    arrayToMatrix(pint, matrix, rows, cols);
 }
 
-void bubbleSortDescending(int arr[])
+void bubbleSortDescending(int *arr, size_t size)
 {
-    for (size_t i = 0; i < ARRSIZE(arr); i++)
-        for (size_t j = 0; j < ARRSIZE(arr); j++)
+    for (size_t i = 0; i < size; i++)
+        for (size_t j = 0; j < size; j++)
             if (arr[i] > arr[j])
                 SWAP(arr[i], arr[j]);
 }
 
-void insertionSortDescending(int arr[])
+void bubbleSortMatrixDescending(int **matrix, size_t rows, size_t cols)
+{
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < rows; j++)
+            for (int k = 0; k < cols; k++)
+                for (int m = 0; m < cols; m++)
+                    if (matrix[i][k] > matrix[j][m])
+                        SWAP(matrix[i][k], matrix[j][m]);
+}
+
+void insertionSortDescending(int *arr, size_t size)
 {
     // Iterating by vector from 2nd element to end: [begin + 1; end]
-    for (size_t i = 1ul; i < ARRSIZE(arr); i++)
+    for (size_t i = 1ul; i < size; i++)
     {
         // Initializing currenint value = of vector
         int val = arr[i];
@@ -676,7 +671,7 @@ void insertionSortDescending(int arr[])
         // While position of prev element is lower than size of vector
         // and element in this position is bigger than currenint value = ->
         // assigning it to next element (j + 1) of vector
-        while (pos < ARRSIZE(arr) && arr[pos] < val)
+        while (pos < size && arr[pos] < val)
         {
             arr[pos + 1] = arr[pos];
             pos--;
@@ -686,16 +681,16 @@ void insertionSortDescending(int arr[])
     }
 }
 
-void selectionSortDescending(int arr[])
+void selectionSortDescending(int *arr, size_t size)
 {
     // Iterating over the range
-    for (size_t i = 0; i < ARRSIZE(arr); i++)
+    for (size_t i = 0; i < size; i++)
     {
         // For example, minimal element is begin element of the vector
         size_t maxPos = i;
 
         // Iterating over the unsorted range
-        for (size_t j = i + 1ul; j < ARRSIZE(arr); j++)
+        for (size_t j = i + 1ul; j < size; j++)
         {
             // If element from the unsorted range is lower than the current ->
             // assigning new position to 'maxPos' variable
@@ -707,36 +702,34 @@ void selectionSortDescending(int arr[])
     }
 }
 
-void ShellSortDescending(int arr[])
+void ShellSortDescending(int *arr, size_t size)
 {
-    for (size_t interval = ARRSIZE(arr) / 2; interval > 0; interval /= 2)
+    for (size_t interval = size / 2; interval > 0; interval /= 2)
     {
-        for (size_t i = 0; i < ARRSIZE(arr); i++)
+        for (size_t i = 0; i < size; i++)
         {
             int val = arr[i];
             size_t j = 0;
             for (j = i; (j >= interval) && (arr[j - interval] < val); j -= interval)
-            {
                 arr[j] = arr[j - interval];
-            }
             arr[j] = val;
         }
     }
 }
 
-void qSortDescending(int arr[], size_t low, size_t high)
+void qSortDescending(int *arr, size_t size, size_t low, size_t high)
 {
     size_t i = low, j = high;
-    // Select pivoint value =
+    // Select pivot value
     int pivot = arr[(i + j) / 2], tmp = 0;
 
-    while (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+    while (i <= j && i < size && j < size)
     {
-        while (arr[i] > pivot && i < ARRSIZE(arr))
+        while (arr[i] > pivot && i < size)
             i++;
-        while (arr[j] < pivot && j < ARRSIZE(arr))
+        while (arr[j] < pivot && j < size)
             j--;
-        if (i <= j && i < ARRSIZE(arr) && j < ARRSIZE(arr))
+        if (i <= j && i < size && j < size)
         {
             tmp = arr[i];
             arr[i] = arr[j];
@@ -746,17 +739,14 @@ void qSortDescending(int arr[], size_t low, size_t high)
         }
     }
     // Recursive call sorting to left side from pivot
-    if (j > low && j < ARRSIZE(arr))
-        qSortDescending(arr, low, j);
+    if (j > low && j < size)
+        qSortDescending(arr, size, low, j);
     // Recursive call sorting to right side from pivot
-    if (i < high && i < ARRSIZE(arr))
-        qSortDescending(arr, i, high);
+    if (i < high && i < size)
+        qSortDescending(arr, size, i, high);
 }
 
-void quickSortDescending(int arr[])
-{
-    qSortDescending(arr, 0, ARRSIZE(arr) - 1);
-}
+void quickSortDescending(int *arr, size_t size) { qSortDescending(arr, size, 0, size - 1); }
 
 void matrixToArr(int **src, int *dest, size_t rows, size_t cols)
 {
@@ -780,10 +770,7 @@ void arrayToMatrix(int *src, int **dest, size_t rows, size_t cols)
         }
 }
 
-unsigned long hex_to_ulong(const char *str)
-{
-    return strtoul(str, NULL, 16);
-}
+unsigned long hex_to_ulong(const char *str) { return strtoul(str, NULL, 0x10); }
 
 char *str_to_upper(char *str)
 {
@@ -865,5 +852,43 @@ char *substr(const char *str, size_t begin, size_t end)
     // Copying content from the specified string in specified interval
     memcpy(substring, &str[begin], end - begin);
     return substring;
+}
+
+void insert(const char *restrict src, char **dest, size_t pos, char c)
+{
+    // Initializing variable that stores size of source string and size of the destination string
+    // (+2 because: +1 -> for passed char 'c'; another +1 -> to end symbol ('\0'))
+    size_t srcsize = strlen(src) + 1ul, destsize = strlen(src) + 2ul;
+
+    // Do some checks to avoid perform unnecessary work with passed source string
+    if (!src || srcsize == 0ul || pos >= srcsize)
+        return;
+
+    // Allocating memory for result string
+    char *pdest = (char *)calloc(destsize, sizeof(char));
+
+    // Check pointer on properly allocated memory
+    if (!pdest)
+        return;
+
+    // Copying characters one by one to the destination string
+    for (size_t src_idx = 0ul, dest_idx = 0ul; src_idx < srcsize; src_idx++)
+    {
+        // If index equals passed index 'pos' - assigning specified char
+        if (src_idx == pos)
+        {
+            pdest[dest_idx] = c;
+            dest_idx++;
+        }
+        pdest[dest_idx] = src[src_idx];
+        dest_idx++;
+    }
+
+    // Adding end of string symbol ('\0') to the end of the result string
+    // to specify it's end
+    pdest[destsize] = 0x00;
+
+    // Reassigning pointer on temporary array to buffer 'dest'
+    *dest = pdest;
 }
 #endif // _ALGORITHMS_
