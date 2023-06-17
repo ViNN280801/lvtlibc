@@ -891,4 +891,4 @@ void insert(const char *restrict src, char **dest, size_t pos, char c)
     // Reassigning pointer on temporary array to buffer 'dest'
     *dest = pdest;
 }
-#endif // _ALGORITHMS_
+#endif // !_ALGORITHMS_
