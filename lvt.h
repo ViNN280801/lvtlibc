@@ -108,6 +108,13 @@
     default: dealloc_mem_ppint)(p, size)
 #endif // !__STDC_VERSION__
 
+// Describes words as word (char *) and it's length
+typedef struct
+{
+    char *word;
+    size_t len;
+} wpair_t;
+
 #ifndef _PRINT_FUNCTIONS_
 /**
  * @brief Prints array on terminal(other types are similar)
@@ -651,5 +658,19 @@ void insert_ch_to_str(const char *restrict src, char **dest, size_t pos, char c)
  * @param str string to append it in certain position
  */
 void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const char *restrict str);
+
+/**
+ * @brief Gets count of words in the sentense
+ * @param sentense specified sentense
+ * @returns Count of words in the specified sentense
+ */
+size_t count_of_words_in_sentense(char const *sentense);
+
+/**
+ * @brief Separates sentense on words and it's lengths
+ * @param sentense specified sentense
+ * @return Array that contains words and it's lengths
+ */
+wpair_t *get_words_from_sentense(char const *sentense);
 #endif // !_ALGORITHMS_
 #endif // !LVT_H

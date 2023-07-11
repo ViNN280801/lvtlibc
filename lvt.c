@@ -455,10 +455,10 @@ void bubbleSortAscending(int *arr, size_t size)
 void bubbleSortMatrixAscending(int **matrix, size_t rows, size_t cols)
 {
     // Perform bubble sort on the diagonal elements
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < rows; j++)
-            for (int k = 0; k < cols; k++)
-                for (int m = 0; m < cols; m++)
+    for (size_t i = 0; i < rows; i++)
+        for (size_t j = 0; j < rows; j++)
+            for (size_t k = 0; k < cols; k++)
+                for (size_t m = 0; m < cols; m++)
                     if (matrix[i][k] < matrix[j][m])
                         SWAP(matrix[i][k], matrix[j][m]);
 }
@@ -649,10 +649,10 @@ void bubbleSortDescending(int *arr, size_t size)
 
 void bubbleSortMatrixDescending(int **matrix, size_t rows, size_t cols)
 {
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < rows; j++)
-            for (int k = 0; k < cols; k++)
-                for (int m = 0; m < cols; m++)
+    for (size_t i = 0; i < rows; i++)
+        for (size_t j = 0; j < rows; j++)
+            for (size_t k = 0; k < cols; k++)
+                for (size_t m = 0; m < cols; m++)
                     if (matrix[i][k] > matrix[j][m])
                         SWAP(matrix[i][k], matrix[j][m]);
 }
@@ -928,5 +928,91 @@ void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const 
 
     // Reassigning pointer on temporary array to buffer 'dest'
     *dest = pdest;
+}
+
+size_t count_of_words_in_sentense(char const *sentense)
+{
+    // If sentense is null pointer returns zero
+    if (!sentense)
+        return 0;
+
+    // Counter of words
+    int counter = 0;
+
+    // Iterating by each symbol in sentense
+    for (size_t i = 0; i < strlen(sentense) + 1; i++)
+        // If symbol is whitespace or nil terminating symbol ('\0')
+        // increasing counter
+        if (sentense[i] == ' ' || sentense[i] == 0x00)
+            counter++;
+
+    return counter;
+}
+
+wpair_t *get_words_from_sentense(char const *sentense)
+{
+    // Get count of words in the sentense
+    size_t wc = count_of_words_in_sentense(sentense);
+
+    // Check that specified string is not null pointer and that count of words not null
+    // (sentense isn't empty)
+    if (!sentense || wc == 0)
+        return NULL;
+
+    // Allocating memory for array of words and it's lengths
+    wpair_t *words = (wpair_t *)calloc(wc, sizeof(wpair_t));
+
+    // Checking of properly memory allocation
+    if (!words)
+        return NULL;
+
+    // Variable for length of current word and index of array to store it
+    size_t len = 0, lenIdx = 0;
+
+    // Iterating by each symbol in the sentense
+    for (size_t i = 0; i < strlen(sentense) + 1; i++)
+    {
+        // Increasing length of word while not meets whitespace or nil terminating symbol ('\0')
+        len++;
+        if (sentense[i] == ' ' || sentense[i] == 0x00)
+        {
+            // Decreasing length (because whitespace or termination sign is counts)
+            len--;
+
+            // Filling words length
+            words[lenIdx].len = len;
+
+            // Move to next word
+            lenIdx++;
+
+            // Zeroing out counter
+            len = 0;
+        }
+    }
+
+    // Allocating memory in array of 'wpair_t' to store words of the specified sentense
+    for (size_t i = 0; i < wc; i++)
+    {
+        words[i].word = (char *)calloc(words[i].len, sizeof(char));
+        if (!words[i].word)
+            return NULL;
+    }
+
+    // Index of symbol in the word
+    size_t wordChIdx = 0;
+
+    // Filling array of words with words
+    for (size_t i = 0; i < wc; i++)
+    {
+        for (size_t j = 0; j < words[i].len; j++)
+        {
+            words[i].word[j] = sentense[wordChIdx];
+            wordChIdx++;
+        }
+        // Skipping whitespaces
+        wordChIdx++;
+    }
+
+    return words;
 }
 #endif // !_ALGORITHMS_
