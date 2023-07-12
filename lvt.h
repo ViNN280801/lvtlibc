@@ -616,6 +616,14 @@ void remove_char(char *str, char c);
 void remove_char_v2(const char *str_in, char *str_out, char c);
 
 /**
+ * @brief Removes char under specified position (!!! DO NOT FORGET TO DEALLOCATE !!!)
+ * @param str string to remove char from it
+ * @param pos position of a char to remove
+ * @return Copy of string without char under specified position
+ */
+char *remove_char_by_pos(char *restrict const str, size_t pos);
+
+/**
  * @brief Gets the substring from the specified string 'str'
  * @param str string to get a substring from it
  * @param begin position of character to copy all content since it

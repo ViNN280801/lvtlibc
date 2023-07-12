@@ -834,6 +834,31 @@ void remove_char_v2(const char *str_in, char *str_out, char c)
     } while (*str_in++);
 }
 
+char *remove_char_by_pos(char *restrict const str, size_t pos)
+{
+    // Allocating memory
+    char *copy = (char *)calloc(strlen(str), sizeof(char));
+    if (!copy)
+        return NULL;
+
+    size_t j = 0;
+    for (size_t i = 0; i < strlen(str); i++)
+    {
+        // Skipping specified position
+        if (i == pos)
+            i++;
+
+        // Copying chars from destination string to it's copy
+        copy[j] = str[i];
+        j++;
+    }
+
+    // Adding nil terminating symbol
+    copy[strlen(str)] = 0x00;
+
+    return copy;
+}
+
 char *substr(const char *str, size_t begin, size_t end)
 {
     // Check if ending position is lower then beginning
