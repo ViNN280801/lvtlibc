@@ -911,7 +911,7 @@ void insert_ch_to_str(const char *restrict src, char **dest, size_t pos, char c)
 
     // Adding end of string symbol ('\0') to the end of the result string
     // to specify it's end
-    pdest[destsize] = 0x00;
+    pdest[destsize - 1] = 0x00;
 
     // Reassigning pointer on temporary array to buffer 'dest'
     *dest = pdest;
@@ -949,7 +949,7 @@ void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const 
 
     // Adding end of string symbol ('\0') to the end of the result string
     // to specify it's end
-    pdest[destsize] = 0x00;
+    pdest[destsize - 1] = 0x00;
 
     // Reassigning pointer on temporary array to buffer 'dest'
     *dest = pdest;
