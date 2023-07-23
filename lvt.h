@@ -732,4 +732,12 @@ long get_filesize(FILE *fd);
  */
 char *read_content_from_file(const char *fname);
 #endif // !_FILES_
+
+#ifndef _TIME_
+/**
+ * @brief Gets current time like (Sun Jul 23 17:15:29 2023)
+ * @return Current time
+ */
+const char *curtime();
+#endif // !_TIME_
 #endif // !LVT_H

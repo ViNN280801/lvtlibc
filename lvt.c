@@ -1118,4 +1118,15 @@ char *read_content_from_file(const char *fname)
     return buffer;
 }
 
+#ifndef _TIME_
+const char *curtime()
+{
+    time_t t;
+    struct tm *tm_info;
+    static char buffer[20];
+    time(&t);
+    tm_info = localtime(&t);
+    return asctime(tm_info);
+}
+#endif // !_TIME_
 #endif // !_FILES_
