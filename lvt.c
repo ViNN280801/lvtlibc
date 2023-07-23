@@ -1041,3 +1041,81 @@ wpair_t *get_words_from_sentense(char const *sentense)
     return words;
 }
 #endif // !_ALGORITHMS_
+
+#ifndef _FILES_
+void write_data_to_file(const char *data, FILE *fd)
+{
+    for (size_t i = 0; i < strlen(data); i++)
+        fputc(data[i], fd);
+    fputc('\n', fd);
+}
+
+#ifdef WIN32
+#include <io.h> // For "access()" func
+#endif
+
+#ifdef __linux__
+#include <unistd.h> // For "access()" func
+#endif
+
+bool exists(const char *fname)
+{
+    if (access(fname, F_OK) == 0)
+        return true;
+    return false;
+}
+
+bool create_file(const char *fname)
+{
+    FILE *file = fopen(fname, "wb");
+    if (file)
+    {
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+
+bool change_fname(const char *oldfname, const char *newfname)
+{
+    if (!exists(oldfname))
+        return false;
+    if (rename(oldfname, newfname) != 0)
+        return false;
+    return true;
+}
+
+long get_filesize(FILE *fd)
+{
+    fseek(fd, 0L, SEEK_END);
+    return ftell(fd);
+}
+
+char *read_content_from_file(const char *fname)
+{
+    FILE *file = fopen(fname, "rb");
+    if (!file)
+    {
+        fprintf(stderr, "Error: Can't open file");
+        return NULL;
+    }
+
+    // +1 -> for nil termination symbol
+    long size = get_filesize(file);
+
+    // Returning seek to the beginning of the file
+    fseek(file, 0L, SEEK_SET);
+
+    // Allocate memory for the buffer
+    char *buffer = (char *)calloc(size, sizeof(char));
+    if (!buffer)
+    {
+        fprintf(stderr, "Error: Can't allocate the memory");
+        fclose(file);
+        return NULL;
+    }
+    fread(buffer, 1, size, file);
+    return buffer;
+}
+
+#endif // !_FILES_

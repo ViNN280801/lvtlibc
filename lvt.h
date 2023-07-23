@@ -681,4 +681,55 @@ size_t count_of_words_in_sentense(char const *sentense);
  */
 wpair_t *get_words_from_sentense(char const *sentense);
 #endif // !_ALGORITHMS_
+
+#ifndef _TIME_
+// TODO
+#endif // !_TIME_
+
+#ifndef _FILES_
+/**
+ * @brief Writes specified data to a file
+ * @param data data to write into a file
+ * @param fd output file stream
+ */
+void write_data_to_file(const char *data, FILE *fd);
+
+/**
+ * @brief Checker of existence of specified file
+ * @param fname name of the file to do existence check
+ * @return "true" if file exists, "false" otherwise
+ */
+bool exists(const char *fname);
+
+/**
+ * @brief Creates file in the current directory
+ * @param fname name of the file to create
+ * @return "true" if the file was created successfully, "false" otherwise
+ */
+bool create_file(const char *fname);
+
+/**
+ * @brief Renames a file with the name 'm_fname'
+ * @param oldfname old file name
+ * @param newfname new file name to rename the file
+ * @return "true" if the renaming was successful, "false" otherwise
+ */
+bool change_fname(const char *oldfname, const char *newfname);
+
+/**
+ * @brief Gets size of the file by it's descriptor
+ * Note: Do not forget to write following line after use this func:
+ * fseek(fd, 0L, SEEK_SET);
+ * @param fd file descriptor
+ * @return Size of the file
+ */
+long get_filesize(FILE *fd);
+
+/**
+ * @brief Reads content from the file
+ * @param fname name of the file
+ * @return Content of the file as "char*"
+ */
+char *read_content_from_file(const char *fname);
+#endif // !_FILES_
 #endif // !LVT_H
