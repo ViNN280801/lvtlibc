@@ -799,14 +799,28 @@ char *str_to_lower(char *str)
     return copy;
 }
 
-char *int_to_hex(int value, size_t maxlen)
+char *int_to_hex(int value, size_t maxlen, char const *format)
 {
     char *hex = (char *)calloc(maxlen, sizeof(char));
-    snprintf(hex, maxlen, "0x%X", value);
+    if (!hex)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(1);
+    }
+
+    snprintf(hex, maxlen, format, value);
+    hex[maxlen + 1] = 0x00;
     return hex;
 }
 
 int hex_to_int(const char *hex, const char *format)
+{
+    int res = 0;
+    sscanf(hex, format, &res);
+    return res;
+}
+
+unsigned hex_to_uint(const char *hex, const char *format)
 {
     unsigned res = 0;
     sscanf(hex, format, &res);
@@ -1040,6 +1054,119 @@ wpair_t *get_words_from_sentense(char const *sentense)
 
     return words;
 }
+
+char *IPv4_to_hex(char const *IPv4)
+{
+    // At first getting all numbers to separate array
+    int *vals = get_vals_from_IPv4_ver2(IPv4);
+
+    /* --- Converting value one by one and putting result to common string --- */
+    char *result = (char *)calloc(11ul, sizeof(char));
+    if (!result)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(1);
+    }
+    strcat(result, "0x");
+
+    for (short i = 0; i < 4; i++)
+    {
+        // Converting integer to hex with precision 2 digits (symbols)
+        char *hexval = int_to_hex(vals[i], 6ul, "%.2x");
+        strcat(result, hexval);
+
+        free(hexval);
+        hexval = NULL;
+    }
+    result[11ul] = 0x00;
+
+    free(vals);
+    vals = NULL;
+
+    return result;
+}
+
+int *get_vals_from_IPv4(char const *IPv4)
+{
+    // Memory allocation and check of properly allocation
+    char *tmp = (char *)calloc(3ul, sizeof(char));
+    if (!tmp)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(1);
+    }
+
+    int *vals = (int *)calloc(4ul, sizeof(int));
+    if (!vals)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(1);
+    }
+
+    // Filling values to dynamically arrays
+    size_t tmp_idx = 0ul, vals_idx = 0ul;
+    for (size_t i = 0ul; i < strlen(IPv4) + 1ul; i++)
+    {
+        tmp[tmp_idx] = IPv4[i];
+        tmp_idx++;
+
+        // If symbols is dot or index is the last character
+        if (IPv4[i] == '.' || i == strlen(IPv4))
+        {
+            // Adding nil-terminating symbol
+            tmp[tmp_idx - 1] = 0x00;
+
+            // Clearing out index
+            tmp_idx = 0ul;
+
+            // Converting tmp string to integer representation
+            // and putting result to values array
+            vals[vals_idx] = atoi(tmp);
+
+            // Moving to the next index in values array
+            vals_idx++;
+        }
+    }
+
+    // Deallocating memory and clearing out pointer
+    free(tmp);
+    tmp = NULL;
+
+    return vals;
+}
+
+int *get_vals_from_IPv4_ver2(char const *IPv4)
+{
+    // Allocating memory and checking it
+    int *vals = (int *)calloc(4ul, sizeof(int));
+    if (!vals)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(1);
+    }
+
+    // Get values one by one
+    sscanf(IPv4, "%d.%d.%d.%d", &vals[0], &vals[1], &vals[2], &vals[3]);
+
+    return vals;
+}
+
+uint32_t ips_between(const char *start, const char *end) { return hex_to_uint(IPv4_to_hex(end), "0x%x") - hex_to_uint(IPv4_to_hex(start), "0x%x"); }
+
+uint32_t ips_between_smart(const char *start, const char *end) { return ntohl(inet_addr(end)) - ntohl(inet_addr(start)); }
+
+uint32_t ips_between_another_smart(const char *start, const char *end)
+{
+    int is[4], ie[4], s = 0, e = 0;
+
+    sscanf(start, "%d.%d.%d.%d", &is[0], &is[1], &is[2], &is[3]);
+    sscanf(end, "%d.%d.%d.%d", &ie[0], &ie[1], &ie[2], &ie[3]);
+
+    s = IPv4_TO_UINT32(is[0], is[1], is[2], is[3]);
+    e = IPv4_TO_UINT32(ie[0], ie[1], ie[2], ie[3]);
+
+    return e - s;
+}
 #endif // !_ALGORITHMS_
 
 #ifndef _FILES_
@@ -1123,7 +1250,6 @@ const char *curtime()
 {
     time_t t;
     struct tm *tm_info;
-    static char buffer[20];
     time(&t);
     tm_info = localtime(&t);
     return asctime(tm_info);

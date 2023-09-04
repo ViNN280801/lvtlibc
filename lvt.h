@@ -8,6 +8,11 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <errno.h>
+#include <inttypes.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #define FOR_INT(n) for (int i = 0; i < n; i++)
 #define FOR_SIZE_T(n) for (size_t i = 0ul; i < n; i++)
@@ -38,6 +43,8 @@
     }
 
 #define VARNAME(var) #var
+
+#define IPv4_TO_UINT32(a, b, c, d) a << 24 | b << 16 | c << 8 | d
 
 #if __STDC_VERSION__ >= 201112L
 #define TYPEOF(var) _Generic((var),                   \
@@ -587,11 +594,12 @@ char *str_to_lower(char *str);
  * @brief Converts integer value to a hex string
  * @param value integer value to convert
  * @param maxlen Maximum number of bytes to be used in the buffer.
+ * @param format format to display ("0x%X", 0x%x, etc.)
  * The generated string has a length of at most n-1, leaving space
  * for the additional terminating null character. [src: https://cplusplus.com/reference/cstdio/snprintf/]
  * @return Hex string represented as "char *" (!!! Don't forget to deallocate memory !!!)
  */
-char *int_to_hex(int value, size_t maxlen);
+char *int_to_hex(int value, size_t maxlen, char const *format);
 
 /**
  * @brief Converts hex string to an integer value
@@ -600,6 +608,14 @@ char *int_to_hex(int value, size_t maxlen);
  * @return Integer value converts from hex string
  */
 int hex_to_int(const char *hex, const char *format);
+
+/**
+ * @brief Converts hex string to an unsigned integer value
+ * @param hex hex string
+ * @param format format to display (0xFF; 0xff; FF -> 255)
+ * @return Integer value converts from hex string
+ */
+unsigned hex_to_uint(const char *hex, const char *format);
 
 /**
  * @brief Removes specified character from the string (all of them)
@@ -675,16 +691,66 @@ void insert_str_to_str(const char *restrict src, char **dest, size_t pos, const 
 size_t count_of_words_in_sentense(char const *sentense);
 
 /**
+ * @brief Converts IPv4 address to hexadecimal string
+ * @param IPv4 string that contains IPv4 address
+ * @return String that represents IPv4 address in hex
+ */
+char *IPv4_to_hex(char const *IPv4);
+
+/**
  * @brief Separates sentense on words and it's lengths
  * @param sentense specified sentense
  * @return Array that contains words and it's lengths
  */
 wpair_t *get_words_from_sentense(char const *sentense);
-#endif // !_ALGORITHMS_
 
-#ifndef _TIME_
-// TODO
-#endif // !_TIME_
+/**
+ * @brief Splits IPv4 on integer values
+ * @param IPv4 string that represents IPv4 address
+ * @return Pointer on array of integer values
+ */
+int *get_vals_from_IPv4(char const *IPv4);
+
+/**
+ * @brief Splits IPv4 on integer values
+ * @param IPv4 string that represents IPv4 address
+ * @return Pointer on array of integer values
+ */
+int *get_vals_from_IPv4_ver2(char const *IPv4);
+
+/**
+ * @brief Receives two IPv4 addresses, and returns the number of
+ * addresses between them (including the first one, excluding the last one).
+ * Assumes that all inputs will be valid IPv4 addresses in the form of strings.
+ * And the last address will always be greater than the first one.
+ * @param start 1st IPv4 address
+ * @param end 2nd IPv4 address
+ * @return Number of addresses between them
+ */
+uint32_t ips_between(const char *start, const char *end);
+
+/**
+ * @brief Receives two IPv4 addresses, and returns the number of
+ * addresses between them (including the first one, excluding the last one).
+ * Assumes that all inputs will be valid IPv4 addresses in the form of strings.
+ * And the last address will always be greater than the first one.
+ * @param start 1st IPv4 address
+ * @param end 2nd IPv4 address
+ * @return Number of addresses between them
+ */
+uint32_t ips_between_smart(const char *start, const char *end);
+
+/**
+ * @brief Receives two IPv4 addresses, and returns the number of
+ * addresses between them (including the first one, excluding the last one).
+ * Assumes that all inputs will be valid IPv4 addresses in the form of strings.
+ * And the last address will always be greater than the first one.
+ * @param start 1st IPv4 address
+ * @param end 2nd IPv4 address
+ * @return Number of addresses between them
+ */
+uint32_t ips_between_another_smart(const char *start, const char *end);
+#endif // !_ALGORITHMS_
 
 #ifndef _FILES_
 /**
