@@ -412,6 +412,32 @@ int *split_number_on_digits(int n)
     return digits;
 }
 
+int *split_number_on_digits_ver2(int n, bool rev)
+{
+    int size = count_of_digits(n), i = 0;
+
+    // Allocating memory for integer array
+    int *digits = (int *)calloc(size, sizeof(int));
+
+    // If memory not allocated properly -> exiting from the programm
+    if (!digits)
+    {
+        fprintf(stderr, "Error: split_number_on_digits(%d, ...): Can't allocate memory. Exiting with failure status: %s\n",
+                n, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    while (n > 0)
+    {
+        digits[i] = n % 10;
+        n /= 10;
+        i++;
+    }
+    if (rev == false)
+        reverse_pint(digits, size);
+    return digits;
+}
+
 void reverse_pint(int *pint, int size)
 {
     int temp = 0;

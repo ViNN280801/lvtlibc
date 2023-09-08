@@ -387,6 +387,15 @@ int get_count_of_digits_in_number_v2(int n);
 int *split_number_on_digits(int n);
 
 /**
+ * @brief Splits specified number on digits. Uses 'reverse_pint()' function to return
+ * digits of number in properly order (not reverse): properly: 1934 -> 1 9 3 4; reversed: 1934 -> 4 3 9 1
+ * @param n number to split it into a digits
+ * @param rev flag of reverse, if "false" returns digits in properly order, if "false" - in reversed order
+ * @return Pointer to an array of integer, where elements are digits of number 'n'
+ */
+int *split_number_on_digits_ver2(int n, bool rev);
+
+/**
  * @brief Reversing number
  * @param pint array of integers to reverse them
  * @param size size of array 'pint'
