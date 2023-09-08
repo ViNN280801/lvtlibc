@@ -414,7 +414,7 @@ int *split_number_on_digits(int n)
 
 int *split_number_on_digits_ver2(int n, bool rev)
 {
-    int size = count_of_digits(n), i = 0;
+    int size = get_count_of_digits_in_number(n), i = 0;
 
     // Allocating memory for integer array
     int *digits = (int *)calloc(size, sizeof(int));
