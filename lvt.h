@@ -759,6 +759,29 @@ uint32_t ips_between_smart(const char *start, const char *end);
  * @return Number of addresses between them
  */
 uint32_t ips_between_another_smart(const char *start, const char *end);
+
+#ifndef _CONVERT_NUM_
+/* === Part of code that converts number to string representation (from 0 to 999'999) === */
+
+/**
+ * @brief Composing number in a string represantation (recursive func)
+ * @param n number
+ * @param num_string pointer to a buffer that stores string representation of number 'n'
+ * @return Number in a string representation
+ */
+static char *compose(unsigned n, char *num_string);
+
+/**
+ * @brief Converts number to a string representaion: 1 -> one
+ * @param n number to convert
+ * @param num_string pointer to a buffer that stores string representation of number 'n'
+ * @return String representation of number 'n'
+ */
+char *number_to_words(unsigned n, char *num_string);
+
+/* === === === === === === === === === === == === === === === === === === === === === === */
+#endif // !_CONVERT_NUM_
+
 #endif // !_ALGORITHMS_
 
 #ifndef _FILES_
