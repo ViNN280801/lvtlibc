@@ -14,6 +14,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#define RUN 32
+
+#define MIN(a, b) ((a < b) ? a : b)
+#define MAX(a, b) ((a < b) ? b : a)
 #define FOR_INT(n) for (int i = 0; i < n; i++)
 #define FOR_SIZE_T(n) for (size_t i = 0ul; i < n; i++)
 #define FOR_INT_FROM_TO(from, to) for (int i = from; i < to; i++)
@@ -204,6 +208,26 @@ bool is_alloc_pdouble(double *pd);
  */
 bool is_alloc_ppdouble(double **ppd, size_t size);
 #endif // !_CHECK_ALLOCATING_
+
+#ifndef _COMPARATORS_
+/**
+ * @brief Compares two integers in ascending order.
+ * @param a Pointer to the first integer
+ * @param b Pointer to the second integer
+ * @return Negative value if a is less than b, zero if they are equal,
+ * positive value if a is greater than b
+ */
+int cmp_int_asc(const void *a, const void *b);
+
+/**
+ * @brief Compares two integers in descending order
+ * @param a Pointer to the first integer
+ * @param b Pointer to the second integer
+ * @return Positive value if a is less than b, zero if they are equal,
+ * negative value if a is greater than b
+ */
+int cmp_int_desc(const void *a, const void *b);
+#endif // !_COMPARATORS_
 
 #ifndef _ALLOCATING_
 /**
@@ -410,6 +434,13 @@ void reverse_pint(int *pint, int size);
 char *int_to_pchar(int n);
 
 /**
+ * @brief Swaps two integers without 3rd value
+ * @param a first number
+ * @param b second number
+ */
+void swap_ints(int *a, int *b);
+
+/**
  * @brief Checks if specified number is prime
  * @param n specified number
  * @return "true" if passed argument 'num' is a prime number
@@ -552,6 +583,27 @@ void qSortDescending(int *arr, size_t size, size_t low, size_t hight);
  * @param size size of specified array
  */
 void quickSortDescending(int *arr, size_t size);
+
+/**
+ * @brief Sorts array in ascending order with direct (in-place) merge sort algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void mergeSortDirect(int arr[], int size);
+
+/**
+ * @brief Sorts array in ascending order with common (natural) merge sort algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void mergeSortNatural(int arr[], int size);
+
+/**
+ * @brief Sorts array in ascending order with timsort algorithm
+ * @param arr array
+ * @param size size of specified array
+ */
+void timsort(int arr[], int size);
 
 /**
  * @brief Converting int matrix to an array (other types similar)

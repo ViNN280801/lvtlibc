@@ -96,7 +96,12 @@ bool is_alloc_ppdouble(double **ppd, size_t rows)
 
     return true;
 }
-#endif
+#endif // !_CHECK_ALLOCATING_
+
+#ifndef _COMPARATORS_
+int cmp_int_asc(const void *a, const void *b) { return (*(int *)a - *(int *)b); }
+int cmp_int_desc(const void *a, const void *b) { return (*(int *)b - *(int *)a); }
+#endif // !_COMPARATORS_
 
 #ifndef _ALLOCATING_
 int *alloc_mem_pint(size_t size)
@@ -458,6 +463,16 @@ char *int_to_pchar(int n)
     return pChar;
 }
 
+void swap_ints(int *a, int *b)
+{
+    // 5 and 3
+
+    *a += *b; // 8 3
+    *b -= *a; // 8 -5
+    *b *= -1; // 8 5
+    *a -= *b; // 3 5
+}
+
 bool is_prime(int n)
 {
     if (n <= 0)
@@ -773,6 +788,142 @@ void qSortDescending(int *arr, size_t size, size_t low, size_t high)
 }
 
 void quickSortDescending(int *arr, size_t size) { qSortDescending(arr, size, 0, size - 1); }
+
+// Calculates next "run" (interval of values)
+int next_run(int run) { return (run <= 1) ? 0 : (int)ceil(run / 2.0); }
+
+void in_place_merge(int arr[], int start, int end)
+{
+    int run = end - start + 1;
+
+    for (run = next_run(run); run > 0; run = next_run(run))
+    {
+        for (int i = start; i + run <= end; i++)
+        {
+            int j = i + run;
+            if (arr[i] > arr[j])
+            {
+                swap_ints(&arr[i], &arr[j]);
+            }
+        }
+    }
+}
+
+void inPlaceMergeSort(int arr[], int s, int e)
+{
+    if (s == e)
+        return;
+
+    // Calculating mid to slice the
+    // array in two halves
+    int mid = (s + e) / 2;
+
+    // Recursive calls to sort left
+    // and right subarrays
+    inPlaceMergeSort(arr, s, mid);
+    inPlaceMergeSort(arr, mid + 1, e);
+
+    in_place_merge(arr, s, e);
+}
+
+void mergeSortDirect(int arr[], int size) { inPlaceMergeSort(arr, 0, size - 1); }
+
+void merge(int arr[], int l, int m, int r)
+{
+    int n1 = m - l + 1,
+        n2 = r - m;
+
+    // Create temporary arrays
+    int L[n1], R[n2];
+
+    // Copy data to temporary arrays L[] and R[]
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    // Merge the temporary arrays back into arr[l..r]
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    // Copy the remaining elements of L[], if any
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // Copy the remaining elements of R[], if any
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void merge_sort_natural(int arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // Same as (l+r)/2, but avoids overflow
+        int m = l + (r - l) / 2;
+
+        // Sort first and second halves
+        merge_sort_natural(arr, l, m);
+        merge_sort_natural(arr, m + 1, r);
+
+        // Merge the sorted halves
+        merge(arr, l, m, r);
+    }
+}
+
+void mergeSortNatural(int arr[], int size) { merge_sort_natural(arr, 0, size - 1); }
+
+void insertionSortForTimsort(int arr[], int left, int right)
+{
+    for (int i = left + 1; i <= right; i++)
+    {
+        int key = arr[i], j = i - 1;
+        while (j >= left && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void timsort(int arr[], int n)
+{
+    for (int i = 0; i < n; i += RUN)
+        insertionSortForTimsort(arr, i, MIN((i + RUN - 1), (n - 1)));
+
+    for (int size = RUN; size < n; size = 2 * size)
+    {
+        for (int left = 0; left < n; left += 2 * size)
+        {
+            int mid = MIN((left + size - 1), (n - 1));
+            int right = MIN((left + 2 * size - 1), (n - 1));
+            merge(arr, left, mid, right);
+        }
+    }
+}
 
 void matrixToArr(int **src, int *dest, size_t rows, size_t cols)
 {
