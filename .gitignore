@@ -1,0 +1,9 @@
+/.vscode
+CMakeFiles/
+cmake_install*
+CMakeCache*
+*.so*
+main*
+*.o
+*.out
+Makefile

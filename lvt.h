@@ -837,5 +837,22 @@ char *read_content_from_file(const char *fname);
  * @return Current time
  */
 const char *curtime();
+
+/**
+ * @brief Starts the timer
+ * @return The clock value representing the start time
+ */
+clock_t start_timer();
+
+/**
+ * @brief Stops the timer, calculates the execution time, and prints it to the console
+ * @param beginning_time The clock value representing the start time returned by start_timer()
+ *
+ * How to use:
+ * clock_t beginning_time = start_timer();
+ * <your code here>
+ * stop_timer_and_print_diff(beginning_time);
+ */
+void stop_timer_and_print_diff(clock_t beginning_time);
 #endif // !_TIME_
 #endif // !LVT_H

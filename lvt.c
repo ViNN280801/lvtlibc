@@ -1318,5 +1318,14 @@ const char *curtime()
     tm_info = localtime(&t);
     return asctime(tm_info);
 }
+
+clock_t start_timer() { return clock(); }
+
+void stop_timer_and_print_diff(clock_t beginning_time)
+{
+    clock_t endTime = clock();
+    double duration_ms = ((double)(endTime - beginning_time) / CLOCKS_PER_SEC) * 1000.0;
+    printf("\033[1;34mExecution time: %.3fms\033[0m\033[1m\n\n", duration_ms);
+}
 #endif // !_TIME_
 #endif // !_FILES_
