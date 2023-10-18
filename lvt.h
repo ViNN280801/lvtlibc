@@ -812,6 +812,211 @@ uint32_t ips_between_smart(const char *start, const char *end);
  */
 uint32_t ips_between_another_smart(const char *start, const char *end);
 
+/**
+ * @brief Solves the Tower of Hanoi problem for 'n' disks
+ * @param n Number of disks to be moved
+ * @param source The source peg
+ * @param auxiliary The auxiliary peg
+ * @param destination The destination peg
+ */
+void towerOfHanoi(int n, char source, char auxiliary, char destination);
+
+/**
+ * @brief Shuffles the elements in the given integer array.
+ * This function rearranges the elements in the input array randomly
+ * The provided array will be modified in place
+ * @param array Pointer to the array to be shuffled
+ * @param size The number of elements in the array
+ */
+void shuffle(int *array, int size);
+
+/**
+ * @brief Counts the number of elements in the range [first, last) that are equal to the given value
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @param value The value to search for
+ * @return The number of elements in the range that are equal to 'value'
+ */
+int count(const int *first, const int *last, int value);
+
+/**
+ * @brief Counts the number of elements in the range [first, last) that satisfy a given predicate
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @param predicate The predicate function to apply to each element
+ * @return The number of elements in the range for which the predicate returns true
+ *
+ * Usage example:
+ * int isEven(int x) { return x % 2 == 0; }
+ * int arr[] = {1, 2, 3, 4, 4, 3, 7, 8, 9, 10};
+ * size_t size = sizeof(arr) / sizeof(arr[0]);
+ * int countEven = count_if(arr, arr + size, isEven);
+ * printf("Count of even numbers: %d\n", countEven);
+ */
+int count_if(const int *first, const int *last, int (*predicate)(int));
+
+/**
+ * @brief Checks if a unary predicate is true for all elements in the range [first, last)
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @param p The unary predicate function to apply to each element
+ * @return true if the predicate returns true for all elements, false otherwise
+ */
+bool all_of(const int *first, const int *last, bool (*p)(int));
+
+/**
+ * @brief Checks if a unary predicate is true for at least one element in the range [first, last)
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @param p The unary predicate function to apply to each element
+ * @return true if the predicate returns true for at least one element, false otherwise
+ */
+bool any_of(const int *first, const int *last, bool (*p)(int));
+
+/**
+ * @brief Checks if a unary predicate is true for none of the elements in the range [first, last)
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @param p The unary predicate function to apply to each element
+ * @return true if the predicate returns false for all elements, true otherwise
+ */
+bool none_of(const int *first, const int *last, bool (*p)(int));
+
+/**
+ * @brief Eliminates all except the first element from every consecutive group of equivalent elements
+ * from the range [first, last) and returns a pointer to the new logical end of the range
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @return Pointer to the new end of the range
+ *
+ * Usage example:
+ * int arr[] = {1, 2, 1, 1, 3, 3, 3, 4, 5, 4};
+ * int size = sizeof(arr) / sizeof(arr[0]);
+ * int* newEnd = unique(arr, arr + size);
+ * int newSize = newEnd - arr;
+ * printf("After unique(): ");
+ * for (int i = 0; i < newSize; i++)
+ *     printf("%d ", arr[i]);
+ * printf("\n");
+ */
+int *unique(int *first, int *last);
+
+/**
+ * @brief Searches the range [first, last) for two consecutive equal elements
+ * @param first Pointer to the first element of the range
+ * @param last Pointer one past the last element of the range
+ * @return Pointer to the first of the first pair of identical elements
+ */
+int *adjacent_find(int *first, int *last);
+
+/**
+ * @brief Returns a pointer to the first element in the range [first, last) such that element < value
+ *        or last if no such element is found
+ * @param arr Pointer to the array
+ * @param first Index of the first element in the range
+ * @param last Index one past the last element in the range
+ * @param value Value to compare the elements to
+ * @return Pointer to the first element greater than or equal to the value
+ */
+int *lower_bound(int arr[], int first, int last, int value);
+
+/**
+ * @brief Returns a pointer to the first element in the range [first, last) such that value < element
+ *        or last if no such element is found
+ * @param arr Pointer to the array
+ * @param first Index of the first element in the range
+ * @param last Index one past the last element in the range
+ * @param value Value to compare the elements to
+ * @return Pointer to the first element greater than the value
+ */
+int *upper_bound(int arr[], int first, int last, int value);
+
+/**
+ * @brief Merges two sorted arrays into one sorted array.
+ * @param arr1 Pointer to the first sorted array
+ * @param size1 Size of the first array
+ * @param arr2 Pointer to the second sorted array
+ * @param size2 Size of the second array
+ * @param result Pointer to the output merged array
+ * @return Size of the merged array
+ */
+size_t mergeTwoArrs(const int *arr1, size_t size1, const int *arr2, size_t size2, int **result);
+
+/**
+ * @brief Merges two consecutive sorted ranges [first, middle) and [middle, last) into one sorted range [first, last)
+ * @param arr Pointer to the array to be merged
+ * @param temp Temporary buffer for merging
+ * @param left Starting index of the first range
+ * @param middle Ending index of the first range and the starting index of the second range
+ * @param right Ending index of the second range
+ */
+void mergeForInPlaceMerge(int *arr, int *temp, int left, int middle, int right);
+
+/**
+ * @brief Recursively performs inplace merge sort on an array
+ * @param arr Pointer to the array to be sorted
+ * @param temp Temporary buffer for merging
+ * @param left Starting index of the current range
+ * @param middle Ending index of the first range and the starting index of the second range
+ * @param right Ending index of the current range
+ */
+void inplace_merge(int *arr, int *temp, int left, int middle, int right);
+
+/**
+ * @brief Finds the smallest element in the range [first, last)
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @return Pointer to the smallest element in the range
+ */
+int *min_element(int *first, int *last);
+
+/**
+ * @brief Finds the greatest element in the range [first, last)
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @return Pointer to the greatest element in the range
+ */
+int *max_element(int *first, int *last);
+
+/**
+ * @brief Transforms the range [first, last) into the previous permutation
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @return "true" if the new permutation precedes the old in lexicographical order,
+ * "false" if the first permutation was reached and the range was reset to the last permutation
+ */
+bool prev_permutation(int *first, int *last);
+
+/**
+ * @brief Permutes the range [first, last) into the next permutation
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @param comp Comparison function
+ * @return "true" if the new permutation is lexicographically greater than the old,
+ * "false" if the last permutation was reached
+ */
+bool next_permutation(int *first, int *last, bool (*comp)(int, int));
+
+/**
+ * @brief Fills the range [first, last) with sequentially increasing values
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @param value Initial value to store
+ */
+void iota(int *first, int *last, int value);
+
+/**
+ * @brief Computes the sum of the elements in the range [first, last).
+ * This function initializes the accumulator `init` with the initial value `init`
+ * and then modifies it with `init += *i` for every iterator `i` in the range [first, last)
+ * in order
+ * @param first Pointer to the first element in the range
+ * @param last Pointer one past the last element in the range
+ * @param init Initial value of the sum
+ * @return The final sum after processing all elements in the range
+ */
+long long accumulate(int *first, int *last, int init);
+
 #ifndef _CONVERT_NUM_
 /* === Part of code that converts number to string representation (from 0 to 999'999) === */
 

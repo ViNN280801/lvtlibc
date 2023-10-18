@@ -1345,6 +1345,401 @@ uint32_t ips_between_another_smart(const char *start, const char *end)
     return e - s;
 }
 
+void towerOfHanoi(int n, char source, char auxiliary, char destination)
+{
+    if (n == 1)
+    {
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return;
+    }
+
+    // Move the top (n-1) disks from the source to the auxiliary peg, using the destination as auxiliary
+    towerOfHanoi(n - 1, source, destination, auxiliary);
+
+    printf("Move disk %d from %c to %c\n", n, source, destination);
+
+    // Move the (n-1) disks from the auxiliary to the destination peg, using the source as auxiliary
+    towerOfHanoi(n - 1, auxiliary, source, destination);
+}
+
+void shuffle(int *array, int size)
+{
+    srand((unsigned)time(NULL));
+
+    for (int i = size - 1; i > 0; i--)
+    {
+        // Generate a random index between 0 and i (inclusive)
+        int j = rand() % (i + 1);
+
+        // Swap the elements at indices i and j
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
+int count(const int *first, const int *last, int value)
+{
+    int count = 0;
+    while (first != last)
+    {
+        if (*first == value)
+            count++;
+        first++;
+    }
+    return count;
+}
+
+int count_if(const int *first, const int *last, int (*predicate)(int))
+{
+    int count = 0;
+    while (first != last)
+    {
+        if (predicate(*first))
+        {
+            count++;
+        }
+        first++;
+    }
+    return count;
+}
+
+bool all_of(const int *first, const int *last, bool (*p)(int))
+{
+    while (first != last)
+    {
+        if (!p(*first))
+            return false;
+        first++;
+    }
+    return true;
+}
+
+bool any_of(const int *first, const int *last, bool (*p)(int))
+{
+    while (first != last)
+    {
+        if (p(*first))
+            return true;
+        first++;
+    }
+    return false;
+}
+
+bool none_of(const int *first, const int *last, bool (*p)(int))
+{
+    while (first != last)
+    {
+        if (p(*first))
+            return false;
+        first++;
+    }
+    return true;
+}
+
+int *unique(int *first, int *last)
+{
+    if (first == last)
+        return last;
+
+    int *result = first;
+    while (++first != last)
+        if (!(*result == *first) && ++result != first)
+            *result = *first;
+
+    return ++result;
+}
+
+int *adjacent_find(int *first, int *last)
+{
+    if (first == last)
+        return last;
+
+    int *next = first;
+    ++next;
+
+    while (next != last)
+    {
+        if (*first == *next)
+            return first;
+        ++next;
+        ++first;
+    }
+
+    return last;
+}
+
+int *lower_bound(int arr[], int first, int last, int value)
+{
+    while (first < last)
+    {
+        int *it = arr + first,
+            count = last - first,
+            step = count / 2;
+
+        it += step;
+
+        if (*it < value)
+            first = it - arr + 1;
+        else
+            last = it - arr;
+    }
+
+    return arr + first;
+}
+
+int *upper_bound(int arr[], int first, int last, int value)
+{
+    while (first < last)
+    {
+        int *it = arr + first,
+            count = last - first,
+            step = count / 2;
+
+        it += step;
+
+        if (value < *it)
+            last = it - arr;
+        else
+            first = it - arr + 1;
+    }
+
+    return arr + first;
+}
+
+size_t mergeTwoArrs(const int *arr1, size_t size1, const int *arr2, size_t size2, int **result)
+{
+    // Free the previous result if it exists
+    if (!*result)
+        free(*result);
+    *result = NULL;
+
+    *result = (int *)calloc(size1 + size2, sizeof(int));
+    if (!*result)
+    {
+        fprintf(stderr, "Can't allocate memory: %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    size_t i = 0, j = 0, k = 0;
+
+    while (i < size1 && j < size2)
+    {
+        if (arr1[i] <= arr2[j])
+        {
+            (*result)[k] = arr1[i];
+            i++;
+        }
+        else
+        {
+            (*result)[k] = arr2[j];
+            j++;
+        }
+        k++;
+    }
+
+    // Copy any remaining elements from the first array
+    while (i < size1)
+    {
+        (*result)[k] = arr1[i];
+        i++;
+        k++;
+    }
+
+    // Copy any remaining elements from the second array
+    while (j < size2)
+    {
+        (*result)[k] = arr2[j];
+        j++;
+        k++;
+    }
+
+    return k; // Return the size of the merged array
+}
+
+void mergeForInPlaceMerge(int *arr, int *temp, int left, int middle, int right)
+{
+    int i = left,
+        j = middle + 1,
+        k = 0;
+
+    while (i <= middle && j <= right)
+        temp[k++] = (arr[i] <= arr[j]) ? arr[i++] : arr[j++];
+
+    while (i <= middle)
+        temp[k++] = arr[i++];
+
+    while (j <= right)
+        temp[k++] = arr[j++];
+
+    for (i = 0; i < k; i++)
+        arr[left + i] = temp[i];
+}
+
+void inplace_merge(int *arr, int *temp, int left, int middle, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        inplace_merge(arr, temp, left, middle, mid);
+        inplace_merge(arr, temp, mid + 1, middle, right);
+        mergeForInPlaceMerge(arr, temp, left, middle, right);
+    }
+}
+
+int *min_element(int *first, int *last)
+{
+    if (first == last)
+        return last;
+
+    int *smallest = first;
+    ++first;
+
+    for (; first != last; ++first)
+        if (*first < *smallest)
+            smallest = first;
+
+    return smallest;
+}
+
+int *max_element(int *first, int *last)
+{
+    if (first == last)
+        return last;
+
+    int *largest = first;
+    ++first;
+
+    for (; first != last; ++first)
+        if (*largest < *first)
+            largest = first;
+
+    return largest;
+}
+
+bool prev_permutation(int *first, int *last)
+{
+    if (first == last)
+        return false;
+    int *i = last;
+    if (first == --i)
+        return false;
+
+    while (0x01)
+    {
+        int *i1 = NULL, *i2 = NULL;
+
+        i1 = i;
+        if (*i1 < *--i)
+        {
+            i2 = last;
+            while (!(*--i2 < *i))
+                ;
+            int temp = *i;
+            *i = *i2;
+            *i2 = temp;
+            while (i1 < last)
+            {
+                int temp = *i1;
+                *i1 = *last;
+                *last = temp;
+                ++i1;
+                --last;
+            }
+            return true;
+        }
+
+        if (i == first)
+        {
+            while (first < last)
+            {
+                int temp = *first;
+                *first = *last;
+                *last = temp;
+                ++first;
+                --last;
+            }
+            return false;
+        }
+    }
+}
+
+bool next_permutation(int *first, int *last, bool (*comp)(int, int))
+{
+    if (first == last)
+        return false;
+
+    int *r_first = last - 1;
+    int *r_last = first - 1;
+
+    // Find the longest non-increasing suffix
+    while (r_first != r_last)
+    {
+        int *left = r_first;
+
+        --r_first;
+
+        if (comp(*left, *r_first))
+        {
+            // Find the rightmost element greater than the pivot
+            int *right = last - 1;
+            while (!comp(*right, *r_first))
+            {
+                --right;
+            }
+
+            // Swap the pivot with the rightmost element
+            int temp = *r_first;
+            *r_first = *right;
+            *right = temp;
+
+            // Reverse the suffix
+            r_first = left + 1;
+            while (r_first < last)
+            {
+                int temp = *r_first;
+                *r_first = *last;
+                *last = temp;
+                ++r_first;
+                --last;
+            }
+            return true;
+        }
+    }
+
+    // No next permutation, so reverse to the lexicographically first permutation
+    while (first < last)
+    {
+        int temp = *first;
+        *first = *last;
+        *last = temp;
+        ++first;
+        --last;
+    }
+
+    return false;
+}
+
+void iota(int *first, int *last, int value)
+{
+    while (first != last)
+    {
+        *first = value;
+        ++first;
+        ++value;
+    }
+}
+
+long long accumulate(int *first, int *last, int init)
+{
+    while (first != last)
+    {
+        init += *first;
+        ++first;
+    }
+    return init;
+}
+
 #ifndef _CONVERT_NUM_
 /* === Part of code that converts number to string representation (from 0 to 999'999) === */
 
